@@ -16,6 +16,11 @@
   <!-- Academic Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
 
+  <!-- MathJax for latex equations -->
+  <script src="https://polyfill.io"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net"></script>
+  
+
   <style>
     /* ── General ─────────────────────────────────────────────── */
     html { scroll-behavior: smooth; }
@@ -237,6 +242,22 @@
     }
     .highlight-box.is-info-light { background: #eef5ff; border-left: 4px solid #3273dc; }
     .highlight-box.is-success-light { background: #effaf3; border-left: 4px solid #23d160; }
+
+    /* ── Sub-tabs (nested within experiment tabs) ──────────── */
+    .sub-tabs .tabs ul { border-bottom: 2px solid #dde; }
+    .sub-tabs .tabs li.is-active a {
+      border-bottom-color: #3273dc;
+      color: #3273dc;
+      font-weight: 600;
+    }
+    .sub-tab-content { display: none; }
+    .sub-tab-content.is-active { display: block; }
+
+    .result-card video {
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+      display: block;
+    }
   </style>
 </head>
 
@@ -655,84 +676,124 @@
 
       <!-- ── ONLINE RL ── -->
       <div id="tab-online-rl" class="tab-content">
-        <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
-          <strong>Setting.</strong>
-          Robometer rewards are used as dense reward signals for online policy learning (e.g., PPO / SAC).
-          Evaluations are run on <em>[XX environments / tasks]</em> from <em>[Benchmark Name]</em>.
-        </div>
-        <div class="results-table" style="margin-bottom:1.5rem;">
-          <table class="table is-fullwidth is-bordered is-hoverable">
-            <thead>
-              <tr>
-                <th>Method</th>
-                <th>Task A</th>
-                <th>Task B</th>
-                <th>Task C</th>
-                <th>Task D</th>
-                <th>Average ↑</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>No Reward (sparse)</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>GROOT</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>VIP</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>RoboCLIP</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>UniSim</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr class="ours">
-                <td><strong>Robometer (ours) ✓</strong></td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
-                <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="columns is-multiline">
-          <div class="column is-4">
-            <div class="result-card">
-              <div class="placeholder-video" style="min-height:180px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Task A — Robot succeeds</strong>
-                <span style="font-size:0.8rem;">online_rl_taskA.mp4</span>
-              </div>
-              <div class="card-caption">Online RL on Task A: policy trained with Robometer reward.</div>
-            </div>
+
+        <!-- Sub-tab navigation -->
+        <div class="sub-tabs" style="margin-bottom:1.5rem;">
+          <div class="tabs is-centered is-small is-toggle">
+            <ul id="online-rl-sub-tab-list">
+              <li class="is-active" data-subtab="single-stage"><a>Single-Stage RL</a></li>
+              <li data-subtab="multi-stage"><a>Multi-Stage RL</a></li>
+            </ul>
           </div>
-          <div class="column is-4">
-            <div class="result-card">
-              <div class="placeholder-video" style="min-height:180px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Task B — Robot succeeds</strong>
-                <span style="font-size:0.8rem;">online_rl_taskB.mp4</span>
-              </div>
-              <div class="card-caption">Online RL on Task B: policy trained with Robometer reward.</div>
-            </div>
+        </div>
+
+        <!-- ── Single-Stage RL ── -->
+        <div id="subtab-single-stage" class="sub-tab-content is-active">
+          <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
+            <strong>Setting.</strong>
+            Robometer rewards are used as dense reward signals for single-stage online policy learning with <a href="https://diffusion-steering.github.io/">DSRL</a> + \\( \pi_0 \\).
           </div>
-          <div class="column is-4">
-            <div class="result-card">
-              <div class="placeholder-video" style="min-height:180px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Learning Curves</strong>
-                <span style="font-size:0.8rem;">online_rl_curves.mp4</span>
+          <div class="columns is-multiline is-centered">
+            <div class="column is-6">
+              <div class="result-card">
+                <video controls muted playsinline preload="metadata">
+                  <source src="assets/online_rl/robometer_auto_online_rl_small.mp4" type="video/mp4">
+                </video>
+                <div class="card-caption">Robometer reward — online RL policy.</div>
               </div>
-              <div class="card-caption">Training curves comparing Robometer vs. baselines on online RL.</div>
+            </div>
+            <div class="column is-6">
+              <div class="result-card">
+                <video controls muted playsinline preload="metadata">
+                  <source src="assets/online_rl/roboreward_auto_online_rl_small.mp4" type="video/mp4">
+                </video>
+                <div class="card-caption">RoboReward baseline — online RL policy.</div>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- ── Multi-Stage RL ── -->
+        <div id="subtab-multi-stage" class="sub-tab-content">
+          <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
+            <strong>Setting.</strong>
+            Robometer rewards are used as dense reward signals for multi-stage online policy learning with <a href="https://diffusion-steering.github.io/">DSRL</a> + \\( \pi_0 \\).
+          </div>
+          <div class="results-table" style="margin-bottom:1.5rem;">
+            <table class="table is-fullwidth is-bordered is-hoverable">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Task A</th>
+                  <th>Task B</th>
+                  <th>Task C</th>
+                  <th>Task D</th>
+                  <th>Average ↑</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>No Reward (sparse)</td>
+                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                </tr>
+                <tr>
+                  <td>GROOT</td>
+                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                </tr>
+                <tr>
+                  <td>VIP</td>
+                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                </tr>
+                <tr>
+                  <td>RoboCLIP</td>
+                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                </tr>
+                <tr>
+                  <td>UniSim</td>
+                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                </tr>
+                <tr class="ours">
+                  <td><strong>Robometer (ours) ✓</strong></td>
+                  <td class="best">XX.X</td><td class="best">XX.X</td>
+                  <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="columns is-multiline">
+            <div class="column is-4">
+              <div class="result-card">
+                <div class="placeholder-video" style="min-height:180px;">
+                  <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
+                  <strong>Task A — Robot succeeds</strong>
+                  <span style="font-size:0.8rem;">online_rl_taskA.mp4</span>
+                </div>
+                <div class="card-caption">Multi-stage RL on Task A: policy trained with Robometer reward.</div>
+              </div>
+            </div>
+            <div class="column is-4">
+              <div class="result-card">
+                <div class="placeholder-video" style="min-height:180px;">
+                  <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
+                  <strong>Task B — Robot succeeds</strong>
+                  <span style="font-size:0.8rem;">online_rl_taskB.mp4</span>
+                </div>
+                <div class="card-caption">Multi-stage RL on Task B: policy trained with Robometer reward.</div>
+              </div>
+            </div>
+            <div class="column is-4">
+              <div class="result-card">
+                <div class="placeholder-video" style="min-height:180px;">
+                  <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
+                  <strong>Learning Curves</strong>
+                  <span style="font-size:0.8rem;">online_rl_curves.mp4</span>
+                </div>
+                <div class="card-caption">Training curves comparing Robometer vs. baselines on multi-stage RL.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- ── OFFLINE RL ── -->
@@ -1069,6 +1130,16 @@
       /* activate clicked tab */
       this.classList.add('is-active');
       document.getElementById('tab-' + this.dataset.tab).style.display = 'block';
+    });
+  });
+
+  /* Online RL sub-tabs */
+  document.querySelectorAll('#online-rl-sub-tab-list li').forEach(function (li) {
+    li.addEventListener('click', function () {
+      document.querySelectorAll('#online-rl-sub-tab-list li').forEach(function (el) { el.classList.remove('is-active'); });
+      document.querySelectorAll('#tab-online-rl .sub-tab-content').forEach(function (el) { el.classList.remove('is-active'); });
+      this.classList.add('is-active');
+      document.getElementById('subtab-' + this.dataset.subtab).classList.add('is-active');
     });
   });
 
