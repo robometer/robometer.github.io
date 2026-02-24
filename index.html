@@ -16,10 +16,24 @@
   <!-- Academic Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
 
-  <!-- MathJax for latex equations -->
-  <script src="https://polyfill.io"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net"></script>
-  
+    <!-- Include MathJax -->
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/javascript">
+  // Ensure MathJax is fully loaded before configuring it
+  window.onload = function() {
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$', '$']]  // This ensures inline math works with $
+      }
+    });
+
+    // Optionally, reprocess math formulas on page load
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+  };
+  </script>
+
 
   <style>
     /* ── General ─────────────────────────────────────────────── */
@@ -153,8 +167,8 @@
     }
     .results-table table { width: 100%; }
     .results-table th {
-      background: #1a1a2e;
-      color: #fff;
+      background: #1a1a2e !important;
+      color: #fff !important;
       font-weight: 600;
       text-align: center;
       vertical-align: middle;
@@ -173,8 +187,8 @@
     }
 
     /* ── Tabs ────────────────────────────────────────────────── */
-    .exp-tabs .tabs ul { border-bottom: 2px solid #dde; }
-    .exp-tabs .tabs li.is-active a { border-bottom-color: #3273dc; color: #3273dc; font-weight: 600; }
+    .exp-tabs .tabs ul { border-bottom: none; }
+    .exp-tabs .tabs li.is-active a { background-color: #3273dc; border-color: #3273dc; color: #fff; font-weight: 600; }
 
     /* ── BibTex ──────────────────────────────────────────────── */
     .bibtex-box {
@@ -244,10 +258,11 @@
     .highlight-box.is-success-light { background: #effaf3; border-left: 4px solid #23d160; }
 
     /* ── Sub-tabs (nested within experiment tabs) ──────────── */
-    .sub-tabs .tabs ul { border-bottom: 2px solid #dde; }
+    .sub-tabs .tabs ul { border-bottom: none; }
     .sub-tabs .tabs li.is-active a {
-      border-bottom-color: #3273dc;
-      color: #3273dc;
+      background-color: #3273dc;
+      border-color: #3273dc;
+      color: #fff;
       font-weight: 600;
     }
     .sub-tab-content { display: none; }
@@ -321,15 +336,6 @@
         Conference / Journal Name, Year
       </p>
 
-      <!-- Keywords -->
-      <div style="margin-top:0.8rem;">
-        <span class="keyword-pill">Reward Modeling</span>
-        <span class="keyword-pill">Robot Learning</span>
-        <span class="keyword-pill">Preference Learning</span>
-        <span class="keyword-pill">Trajectory Comparisons</span>
-        <span class="keyword-pill">Reinforcement Learning</span>
-        <span class="keyword-pill">Imitation Learning</span>
-      </div>
 
       <!-- Link buttons -->
       <div class="link-buttons">
@@ -362,14 +368,12 @@
 <!-- Teaser figure / video -->
 <section class="section is-light-alt" style="padding: 2rem 1.5rem;">
   <div class="container">
-    <div class="placeholder-img" style="min-height:300px;">
-      <span class="icon-wrap"><i class="fas fa-image"></i></span>
-      <strong>Teaser Figure</strong>
-      <span>Overview of Robometer: replace with teaser.png showing the dual-objective training paradigm and example reward trajectories.</span>
-    </div>
+    <img src="assets/images/robometer_teaser_small.jpeg" alt="Robometer overview" style="width:100%;">
     <p class="fig-caption">
       <strong>Figure 1 — Robometer overview.</strong>
-      Robometer trains a reward model with two complementary signals: (1) frame-level progress supervision on expert data and (2) trajectory-comparison preference supervision across trajectories of varying quality. This enables scalable learning from the diverse, suboptimal data in RBM-1M.
+      Robometer is trained on RBM-1M, a 1M-trajectory dataset spanning 21 robot embodiments, containing both reward-labeled/expert trajectories and reward-unlabeled, failed trajectories.
+      The model is supervised with a dual objective: predicting frame-level task progress (reward) and learning trajectory-level preferences from pairwise comparisons. To help with downstream RL, it is also trained to predict per-frame task success.
+      This training recipe enables scalable reward learning, is validated on reward model evaluations from 6 out-of-distribution scenes collected at 3 institutions, and supports diverse downstream applications such as offline & online RL, imitation learning data filtering and retrieval, and automated failure detection.
     </p>
   </div>
 </section>
@@ -377,7 +381,7 @@
 <!-- ════════════════════════════════════════════════════════════
      ABSTRACT
 ════════════════════════════════════════════════════════════ -->
-<section class="section is-white-alt" id="abstract">
+<!--<section class="section is-white-alt" id="abstract">
   <div class="container" style="max-width:860px;">
     <h2 class="section-heading">Abstract</h2>
     <div class="section-divider"></div>
@@ -396,7 +400,7 @@
       and improves robot learning performance across a diverse set of downstream applications.
     </div>
   </div>
-</section>
+</section> -->
 
 <!-- ════════════════════════════════════════════════════════════
      METHOD
@@ -691,7 +695,8 @@
         <div id="subtab-single-stage" class="sub-tab-content is-active">
           <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
             <strong>Setting.</strong>
-            Robometer rewards are used as dense reward signals for single-stage online policy learning with <a href="https://diffusion-steering.github.io/">DSRL</a> + \\( \pi_0 \\).
+            Robometer rewards are used as dense reward signals for single-stage, online reinforcement learning with <a href="https://diffusion-steering.github.io/">DSRL</a> + $\pi_0$.
+            Successes are *automatically* detected by the reward model.
           </div>
           <div class="columns is-multiline is-centered">
             <div class="column is-6">
@@ -699,7 +704,7 @@
                 <video controls muted playsinline preload="metadata">
                   <source src="assets/online_rl/robometer_auto_online_rl_small.mp4" type="video/mp4">
                 </video>
-                <div class="card-caption">Robometer reward — online RL policy.</div>
+                <div class="card-caption">Robometer 100x speed real world training clip.</div>
               </div>
             </div>
             <div class="column is-6">
@@ -707,9 +712,36 @@
                 <video controls muted playsinline preload="metadata">
                   <source src="assets/online_rl/roboreward_auto_online_rl_small.mp4" type="video/mp4">
                 </video>
-                <div class="card-caption">RoboReward baseline — online RL policy.</div>
+                <div class="card-caption">RoboReward 100x speed real world training clip. RoboReward consistently
+                  falsely predicts success/full reward before the robot finishes the task, leading to poor evaluation performance.
+                </div>
               </div>
             </div>
+          </div>
+
+          <div class="results-table" style="margin-bottom:1.5rem;">
+            <table class="table is-fullwidth is-bordered is-hoverable">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Success Rate ↑</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>$\pi_0$ base (before RL)</td>
+                  <td>0.20</td>
+                </tr>
+                <tr>
+                  <td>RoboReward</td>
+                  <td>0.55</td>
+                </tr>
+                <tr class="ours">
+                  <td><strong>Robometer (ours) ✓</strong></td>
+                  <td class="best">0.85</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -717,80 +749,56 @@
         <div id="subtab-multi-stage" class="sub-tab-content">
           <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
             <strong>Setting.</strong>
-            Robometer rewards are used as dense reward signals for multi-stage online policy learning with <a href="https://diffusion-steering.github.io/">DSRL</a> + \\( \pi_0 \\).
+            Robometer rewards are used as dense reward signals for multi-stage online policy learning with <a href="https://diffusion-steering.github.io/">DSRL</a> + $\pi_0$.
+            We perform a long-horizon, multi-stage RL task by using a VLM to break down the task into 2 sub-tasks, "put the corn in the pot on the dish rack" and "put the pot lid on the pot in the dish rack".
+            Successes and stage advancement are *automatically* detected by the reward model.
+          </div>
+          <div class="columns is-multiline">
+            <div class="column is-6">
+              <div class="result-card">
+                <video controls muted playsinline preload="metadata">
+                  <source src="assets/online_rl/robometer_multistage_online_rl_small.mp4" type="video/mp4">
+                </video>
+                <div class="card-caption">Robometer Multi-stage RL at 100x speed. Robometer is 
+                  robust to when the robot drops the corn next to but not into the pot, leading to few false stage advancements.
+                </div>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="result-card">
+                <video controls muted playsinline preload="metadata">
+                  <source src="assets/online_rl/roboreward_multistage_online_rl_small.mp4" type="video/mp4">
+                </video>
+                <div class="card-caption">Roboreward Multi-stage RL at 100x speed. Roboreward is 
+                  often falsely predicts success for the first stage when the robot drops the corn next to but not into the pot, leading to poor downstream evaluation performance
+                  where the robot rarely puts the corn into the pot.
+                </div>
+              </div>
+            </div>
           </div>
           <div class="results-table" style="margin-bottom:1.5rem;">
             <table class="table is-fullwidth is-bordered is-hoverable">
               <thead>
                 <tr>
                   <th>Method</th>
-                  <th>Task A</th>
-                  <th>Task B</th>
-                  <th>Task C</th>
-                  <th>Task D</th>
-                  <th>Average ↑</th>
+                  <th>Success Rate ↑</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>No Reward (sparse)</td>
-                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                  <td>$\pi_0$ base (before RL)</td>
+                  <td>0.20</td>
                 </tr>
                 <tr>
-                  <td>GROOT</td>
-                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-                </tr>
-                <tr>
-                  <td>VIP</td>
-                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-                </tr>
-                <tr>
-                  <td>RoboCLIP</td>
-                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-                </tr>
-                <tr>
-                  <td>UniSim</td>
-                  <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                  <td>RoboReward</td>
+                  <td>0.20</td>
                 </tr>
                 <tr class="ours">
                   <td><strong>Robometer (ours) ✓</strong></td>
-                  <td class="best">XX.X</td><td class="best">XX.X</td>
-                  <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
+                  <td class="best">0.70</td>
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div class="columns is-multiline">
-            <div class="column is-4">
-              <div class="result-card">
-                <div class="placeholder-video" style="min-height:180px;">
-                  <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                  <strong>Task A — Robot succeeds</strong>
-                  <span style="font-size:0.8rem;">online_rl_taskA.mp4</span>
-                </div>
-                <div class="card-caption">Multi-stage RL on Task A: policy trained with Robometer reward.</div>
-              </div>
-            </div>
-            <div class="column is-4">
-              <div class="result-card">
-                <div class="placeholder-video" style="min-height:180px;">
-                  <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                  <strong>Task B — Robot succeeds</strong>
-                  <span style="font-size:0.8rem;">online_rl_taskB.mp4</span>
-                </div>
-                <div class="card-caption">Multi-stage RL on Task B: policy trained with Robometer reward.</div>
-              </div>
-            </div>
-            <div class="column is-4">
-              <div class="result-card">
-                <div class="placeholder-video" style="min-height:180px;">
-                  <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                  <strong>Learning Curves</strong>
-                  <span style="font-size:0.8rem;">online_rl_curves.mp4</span>
-                </div>
-                <div class="card-caption">Training curves comparing Robometer vs. baselines on multi-stage RL.</div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -1105,8 +1113,7 @@
     </p>
     <p style="margin-top:0.5rem;font-size:0.85rem;">
       Website template adapted from
-      <a href="https://nerfies.github.io/" target="_blank">Nerfies</a>.
-      Licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+      <a href="https://opendrivelab.com/kai0-rl/" target="_blank">RISE</a>.
     </p>
   </div>
 </footer>
