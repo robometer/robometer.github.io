@@ -466,11 +466,7 @@
     <!-- Architecture overview -->
     <div class="columns is-vcentered" style="margin-bottom:2rem;">
       <div class="columns-item column is-7">
-        <div class="placeholder-img" style="min-height:280px;">
-          <span class="icon-wrap"><i class="fas fa-project-diagram"></i></span>
-          <strong>Architecture Diagram</strong>
-          <span>Replace with method_overview.png — the Robometer model architecture: vision encoder, reward head, dual-loss training.</span>
-        </div>
+        <img src="assets/images/robometer_method_figure.png" alt="Robometer method overview" style="width:100%; display:block; border-radius:8px;">
       </div>
       <div class="column is-5">
         <h3 class="title is-4" style="color:#1a1a2e;">Dual-Objective Training</h3>
@@ -706,6 +702,130 @@
       </div>
     </div>
 
+    <!-- Reward curves by dataset/task (ID) -->
+    <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Reward curves by trajectory (RBM-EVAL-ID)</h3>
+    <p style="text-align:center;color:#555;margin-bottom:1.25rem;font-size:0.95rem;">Same random trajectory compared across four reward models.</p>
+    <div class="reward-curves-viewer" style="max-width:1100px;margin:0 auto 2rem;">
+      <div class="reward-curves-controls" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1rem;margin-bottom:1.5rem;padding:1rem;background:#f7f9fc;border-radius:10px;">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;font-weight:600;color:#333;">
+          Dataset
+          <div class="select is-small">
+            <select id="reward-curves-dataset">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;font-weight:600;color:#333;">
+          Task
+          <div class="select is-small">
+            <select id="reward-curves-task">
+              <option value="">— Select —</option>
+            </select>
+          </div>
+        </label>
+      </div>
+      <div id="reward-curves-grid" class="columns is-multiline" style="margin:0 -0.5rem;">
+        <div class="column is-6" style="padding:0.5rem;" data-method="rbm">
+          <div class="result-card" style="height:100%;">
+            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">Robometer</div>
+            <img class="reward-curve-img" alt="Robometer" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
+          </div>
+        </div>
+        <div class="column is-6" style="padding:0.5rem;" data-method="robodopamine">
+          <div class="result-card" style="height:100%;">
+            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">Robo-Dopamine</div>
+            <img class="reward-curve-img" alt="Robo-Dopamine" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
+          </div>
+        </div>
+        <div class="column is-6" style="padding:0.5rem;" data-method="roboreward">
+          <div class="result-card" style="height:100%;">
+            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">RoboReward-4B</div>
+            <img class="reward-curve-img" alt="RoboReward-4B" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
+          </div>
+        </div>
+        <div class="column is-6" style="padding:0.5rem;" data-method="vlac">
+          <div class="result-card" style="height:100%;">
+            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">VLAC-8B</div>
+            <img class="reward-curve-img" alt="VLAC-8B" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    (function() {
+      var BASE = 'assets/images/reward_curves_id';
+      var CONFIG = { qualities: ['success', 'failure'], maxIdx: 20, maxIdxSuccess: 8 };
+      var DEFAULT_DATASET = 'jesbu1_racer_rfm_racer_val';
+      var DEFAULT_TASK = 'open_the_top_drawer';
+      var datasetSelect = document.getElementById('reward-curves-dataset');
+      var taskSelect = document.getElementById('reward-curves-task');
+      var grid = document.getElementById('reward-curves-grid');
+      function fillDatasetOptions(datasets) {
+        var opts = datasetSelect.querySelectorAll('option');
+        for (var i = 1; i < opts.length; i++) opts[i].remove();
+        Object.keys(datasets).sort().forEach(function(d) {
+          var o = document.createElement('option');
+          o.value = d;
+          o.textContent = d;
+          datasetSelect.appendChild(o);
+        });
+      }
+      function fillTaskOptions(datasets) {
+        var data = datasets || CONFIG.datasets;
+        if (!data) return;
+        var d = datasetSelect.value;
+        while (taskSelect.options.length > 1) taskSelect.remove(1);
+        if (!d || !data[d]) return;
+        data[d].forEach(function(t) {
+          var o = document.createElement('option');
+          o.value = t;
+          o.textContent = t.length > 50 ? t.slice(0, 47) + '...' : t;
+          taskSelect.appendChild(o);
+        });
+      }
+      function pickRandom() {
+        var q = CONFIG.qualities[Math.floor(Math.random() * CONFIG.qualities.length)];
+        var maxIdx = (q === 'success') ? CONFIG.maxIdxSuccess : CONFIG.maxIdx;
+        var idx = 1 + Math.floor(Math.random() * maxIdx);
+        return { quality: q, idx: idx };
+      }
+      function updateImages() {
+        var dataset = datasetSelect.value;
+        var task = taskSelect.value;
+        if (!dataset || !task) return;
+        var r = pickRandom();
+        var quality = r.quality, idx = r.idx;
+        grid.querySelectorAll('[data-method]').forEach(function(col) {
+          var method = col.getAttribute('data-method');
+          var img = col.querySelector('.reward-curve-img');
+          var src = BASE + '/' + encodeURIComponent(dataset) + '/' + encodeURIComponent(task) + '/' + method + '/' + method + '_' + quality + '_' + idx + '_final.png';
+          img.src = src;
+          img.onerror = function() { this.style.background='#eee'; this.alt='Image not found'; };
+        });
+      }
+      datasetSelect.addEventListener('change', function() { fillTaskOptions(); taskSelect.value = ''; });
+      taskSelect.addEventListener('change', updateImages);
+      function init(configData) {
+        CONFIG.datasets = configData;
+        var datasets = configData && Object.keys(configData);
+        if (!datasets || datasets.length === 0) return;
+        fillDatasetOptions(configData);
+        var dataset = configData[DEFAULT_DATASET] ? DEFAULT_DATASET : datasets[0];
+        datasetSelect.value = dataset;
+        fillTaskOptions(configData);
+        var tasks = configData[dataset];
+        var task = (tasks && tasks.indexOf(DEFAULT_TASK) !== -1) ? DEFAULT_TASK : (tasks && tasks[0]);
+        if (task) {
+          taskSelect.value = task;
+          updateImages();
+        }
+      }
+      fetch('assets/images/reward_curves_id_config.json').then(function(r) { return r.json(); }).then(init).catch(function() {
+        init({ 'jesbu1_racer_rfm_racer_val': ['open_the_top_drawer'] });
+      });
+    })();
+    </script>
+
   </div>
 </section>
 
@@ -719,7 +839,7 @@
     <p style="text-align:center; color:#555; margin-bottom:1.5rem; max-width:600px; margin-left:auto; margin-right:auto;">
       Try the reward model evaluation UI below.
     </p>
-    <div style="max-width:900px; margin:0 auto; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.12);">
+    <div style="width:100%; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,.12);">
       <iframe
         src="https://rewardfm-rewardeval-ui.hf.space"
         frameborder="0"
