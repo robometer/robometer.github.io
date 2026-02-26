@@ -584,10 +584,43 @@
       <div class="card-caption"><strong>Video-language reward confusion matrix.</strong> For each task (unseen data), we score all video–instruction pairs. Robometer yields the most diagonal matrix, indicating strong alignment between demos and instructions. Values are column-normalized diagonal means (fraction of reward on aligned pairs).</div>
     </div>
 
-    <p style="text-align:center;color:#555;margin-bottom:1.5rem;max-width:700px;margin-left:auto;margin-right:auto;">
-      Reward model correlation with human labels on RBM-EVAL. Higher is better. Best per row in <span style="color:#0a6b2e;font-weight:700;">green</span>.
+    <!-- Summary table (TABLE I): VOC r and Kendall τ -->
+    <div class="results-table" style="margin-bottom:1rem; overflow-x:auto; max-width:960px; margin-left:auto; margin-right:auto;">
+      <table class="table is-fullwidth is-bordered is-hoverable">
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th colspan="3">Baselines</th>
+            <th colspan="3">w/ RoboReward Training Data</th>
+            <th colspan="2">w/ our RBM-1M data</th>
+          </tr>
+          <tr>
+            <th>GVL</th>
+            <th>VLAC</th>
+            <th>RoboDopamine</th>
+            <th>RoboReward-4B</th>
+            <th>RoboReward-8B</th>
+            <th>Robometer</th>
+            <th>ReWiND</th>
+            <th>Robometer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="separator-row"><td colspan="9"><strong>(a) Reward alignment (VOC Pearson $r$) ↑</strong></td></tr>
+          <tr><td>RBM-EVAL-ID</td><td>0.16</td><td>0.16</td><td>0.13</td><td>0.77</td><td>0.82</td><td>0.84</td><td>0.46</td><td class="ours best"><strong>0.92</strong></td></tr>
+          <tr><td>RBM-EVAL-OOD</td><td>0.21</td><td>0.17</td><td>0.08</td><td>0.88</td><td>0.88</td><td>0.93</td><td>0.51</td><td class="ours best"><strong>0.95</strong></td></tr>
+          <tr class="separator-row"><td colspan="9"><strong>(b) Trajectory ranking (Kendall $\tau$) ↑</strong></td></tr>
+          <tr><td>RBM-EVAL-OOD</td><td>0.19</td><td>0.08</td><td>0.11</td><td>0.50</td><td>0.47</td><td>0.55</td><td>0.01</td><td class="ours best"><strong>0.66</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="is-size-7" style="text-align:center;color:#666;margin-bottom:1rem;max-width:720px;margin-left:auto;margin-right:auto;">(a) Reward alignment (VOC Pearson $r$) and (b) trajectory ranking (Kendall $\tau_a$) on RBM-EVAL. Baselines by training data: GVL (w/ GPT-5-mini, unknown data), VLAC (300k trajectories), RoboDopamine (100k). We compare Robometer to RoboReward-4B/8B on their data, and ReWiND and Robometer on the full RBM-1M dataset.</p>
+
+    <p style="text-align:center;margin-bottom:1rem;">
+      <button type="button" class="button is-small is-light" id="toggle-full-eval" aria-expanded="false">Show full per-dataset results</button>
     </p>
 
+    <div id="full-eval-panels" style="display:none;">
     <div class="eval-tabs" style="margin-bottom:1.5rem;">
       <div class="tabs is-centered is-medium is-toggle">
         <ul id="eval-split-tab-list">
@@ -701,8 +734,64 @@
       </div>
     </div>
 
+    </div><!-- #full-eval-panels -->
+
+    <!-- Preference accuracy: Different Quality vs Different task (RBM-EVAL-OOD) -->
+    <h3 class="title is-5" style="margin-top:2rem;text-align:center;color:#1a1a2e;">Preference Accuracy (RBM-EVAL-OOD)</h3>
+    <p style="text-align:center;color:#555;margin-bottom:1.25rem;font-size:0.95rem;">RL-VLM-F vs Robometer on 500 comparisons per dataset. Best in <span style="color:#0a6b2e;font-weight:700;">green</span>.</p>
+    <div class="columns" style="align-items:flex-start;gap:1.5rem;">
+      <div class="column is-6">
+        <p class="has-text-weight-semibold" style="margin-bottom:0.75rem;color:#1a1a2e;text-align:center;">Different Quality</p>
+        <div class="results-table" style="overflow-x:auto;">
+          <table class="table is-fullwidth is-bordered is-hoverable">
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>RL-VLM-F (%)</th>
+                <th>Robometer (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Univ1 Franka</td><td>52.1</td><td class="best"><strong>75.0</strong></td></tr>
+              <tr><td>Univ1 Koch</td><td>54.4</td><td class="best"><strong>79.4</strong></td></tr>
+              <tr><td>Univ1 Trossen</td><td>66.7</td><td class="best"><strong>76.2</strong></td></tr>
+              <tr><td>Univ1 xArm</td><td>48.6</td><td class="best"><strong>88.9</strong></td></tr>
+              <tr><td>Univ2 Franka</td><td>54.4</td><td class="best"><strong>85.4</strong></td></tr>
+              <tr><td>Univ3 SO-101</td><td>56.7</td><td class="best"><strong>90.0</strong></td></tr>
+              <tr class="ours"><td><strong>Average</strong></td><td>55.5</td><td class="best"><strong>82.5</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="is-size-7" style="color:#666;margin-top:0.5rem;text-align:center;">Different quality trajectory pairwise preference accuracy.</p>
+      </div>
+      <div class="column is-6">
+        <p class="has-text-weight-semibold" style="margin-bottom:0.75rem;color:#1a1a2e;text-align:center;">Different task</p>
+        <div class="results-table" style="overflow-x:auto;">
+          <table class="table is-fullwidth is-bordered is-hoverable">
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>RL-VLM-F (%)</th>
+                <th>Robometer (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Univ1 Franka</td><td>70.7</td><td class="best"><strong>100.0</strong></td></tr>
+              <tr><td>Univ1 Koch</td><td>54.7</td><td class="best"><strong>89.8</strong></td></tr>
+              <tr><td>Univ1 Trossen</td><td>64.0</td><td class="best"><strong>99.0</strong></td></tr>
+              <tr><td>Univ1 xArm</td><td>73.3</td><td class="best"><strong>98.2</strong></td></tr>
+              <tr><td>Univ2 Franka</td><td>55.3</td><td class="best"><strong>98.4</strong></td></tr>
+              <tr><td>Univ3 SO-101</td><td>72.7</td><td class="best"><strong>100.0</strong></td></tr>
+              <tr class="ours"><td><strong>Average</strong></td><td>65.1</td><td class="best"><strong>97.6</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="is-size-7" style="color:#666;margin-top:0.5rem;text-align:center;">Different task trajectory pairwise preference accuracy.</p>
+      </div>
+    </div>
+
     <!-- Qualitative plots -->
-    <h3 class="title is-5" style="margin-top:2rem;text-align:center;color:#1a1a2e;">Qualitative Reward Curves</h3>
+    <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Qualitative Reward Curves</h3>
     <p style="text-align:center;color:#555;margin-bottom:1.5rem;font-size:0.95rem;">
       Reward curves predicted by Robometer and ablated variants on example trajectories.
     </p>
@@ -873,8 +962,8 @@
     <h2 class="section-heading">Low-rank Finetuning of Robometer</h2>
     <div class="section-divider"></div>
 
-    <p style="color:#555;margin-bottom:1.5rem;max-width:600px;margin-left:auto;margin-right:auto;text-align:center;">
-      We finetune Robometer on the <a href="https://huggingface.co/datasets/MINT-SJTU/RoboFAC-dataset" target="_blank" rel="noopener">RoboFAC dataset</a> (10K+ videos, 78K+ QA pairs) and compare zero-shot and finetuned Robometer-4B to Qwen3-VL baselines.
+    <p style="color:#555;margin-bottom:1.5rem;max-width:640px;margin-left:auto;margin-right:auto;text-align:center;">
+      Robometer serves as a strong initialization for domain-specific reward fine-tuning: practitioners can adapt it to new tasks or embodiments with limited data and compute (e.g., LoRA with a single GPU) instead of training a reward model from scratch. We demonstrate this on <a href="https://huggingface.co/datasets/MINT-SJTU/RoboFAC-dataset" target="_blank" rel="noopener">RoboFAC</a>; fine-tuning from Robometer substantially outperforms fine-tuning the base VLM across reward and ranking metrics.
     </p>
 
     <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
@@ -1345,6 +1434,20 @@
       document.getElementById('tab-' + this.dataset.tab).style.display = 'block';
     });
   });
+
+  /* Toggle full per-dataset eval tables */
+  (function () {
+    var btn = document.getElementById('toggle-full-eval');
+    var panel = document.getElementById('full-eval-panels');
+    if (btn && panel) {
+      btn.addEventListener('click', function () {
+        var isOpen = panel.style.display === 'block';
+        panel.style.display = isOpen ? 'none' : 'block';
+        btn.textContent = isOpen ? 'Show full per-dataset results' : 'Hide full per-dataset results';
+        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    }
+  })();
 
   /* Eval split tabs (RBM-EVAL-ID / OOD) */
   document.querySelectorAll('#eval-split-tab-list li').forEach(function (li) {
