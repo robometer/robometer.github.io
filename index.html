@@ -1344,32 +1344,25 @@
           </table>
         </div>
         <div class="columns is-multiline">
+          <div class="column is-8">
+            <div class="result-card">
+              <div style="display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-start;">
+                <img src="assets/retrieval/retrieved1.gif" alt="Stir Pot Example 1" style="width: 32%; border-radius:8px; background:#eee;">
+                <img src="assets/retrieval/retrieved2.gif" alt="Stir Pot Example 2" style="width: 32%; border-radius:8px; background:#eee;">
+                <img src="assets/retrieval/retrieved3.gif" alt="Open Drawer Example 1" style="width: 32%; border-radius:8px; background:#eee;">
+              </div>
+              <div class="card-caption">
+                <strong>Instruction:</strong> Open the red drawer<br>
+                Example retrieved subtrajectories by Robometer.
+              </div>
+            </div>
+          </div>
           <div class="column is-4">
             <div class="result-card">
               <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0;">
-                <source src="assets/images/stir_pot_compressed.mp4" type="video/mp4">
+                <source src="assets/retrieval/open_drawer.mp4" type="video/mp4">
               </video>
-              <div class="card-caption">Stir Pot — top-ranked demonstration retrieved by Robometer.</div>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="result-card">
-              <div class="placeholder-video" style="min-height:180px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Policy Rollout — Task A</strong>
-                <span style="font-size:0.8rem;">retrieval_policy_taskA.mp4</span>
-              </div>
-              <div class="card-caption">Diffusion Policy trained on Robometer-retrieved data succeeds on Task A.</div>
-            </div>
-          </div>
-          <div class="column is-4">
-            <div class="result-card">
-              <div class="placeholder-img" style="min-height:180px;">
-                <span class="icon-wrap"><i class="fas fa-chart-bar"></i></span>
-                <strong>Retrieval Quality vs. K</strong>
-                <span>Replace with retrieval_topk.png</span>
-              </div>
-              <div class="card-caption">Policy success rate vs. number of retrieved demonstrations (Top-K).</div>
+              <div class="card-caption">Trained policy on Robometer-retrieved data.</div>
             </div>
           </div>
         </div>
