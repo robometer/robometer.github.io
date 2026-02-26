@@ -176,7 +176,9 @@
     }
     .results-table td { text-align: center; vertical-align: middle; }
     .results-table tr:nth-child(even) td { background: #f4f6fb; }
-    .results-table .best { font-weight: 700; color: #0a6b2e; }
+    .results-table .best { font-weight: 700; color: #0a6b2e; background-color: #e6f4ea !important; }
+    .failure-detection-task-table th:nth-child(4), .failure-detection-task-table th:nth-child(7), .failure-detection-task-table th:nth-child(10),
+    .failure-detection-task-table td:nth-child(4), .failure-detection-task-table td:nth-child(7), .failure-detection-task-table td:nth-child(10) { background-color: #f0f0f0; }
     .results-table .ours { background: #eef3ff !important; }
     .results-table .separator-row td {
       background: #e8ecf5;
@@ -190,6 +192,10 @@
     /* ── Tabs ────────────────────────────────────────────────── */
     .exp-tabs .tabs ul { border-bottom: none; }
     .exp-tabs .tabs li.is-active a { background-color: #3273dc; border-color: #3273dc; color: #fff; font-weight: 600; }
+    .eval-tabs .tabs ul { border-bottom: none; }
+    .eval-tabs .tabs li.is-active a { background-color: #3273dc; border-color: #3273dc; color: #fff; font-weight: 600; }
+    .eval-tab-panel { display: none; }
+    .eval-tab-panel.is-active { display: block; }
 
     /* ── BibTex ──────────────────────────────────────────────── */
     .bibtex-box {
@@ -300,7 +306,8 @@
         <a class="navbar-item" href="#abstract">Abstract</a>
         <a class="navbar-item" href="#method">Method</a>
         <a class="navbar-item" href="#dataset">Dataset</a>
-        <a class="navbar-item" href="#ablations">Ablations</a>
+        <a class="navbar-item" href="#ablations">Offline Eval</a>
+        <a class="navbar-item" href="#finetuning">LoRA Finetuning</a>
         <a class="navbar-item" href="#experiments">Experiments</a>
         <a class="navbar-item" href="#bibtex">BibTeX</a>
       </div>
@@ -539,145 +546,185 @@
 </section>
 
 <!-- ════════════════════════════════════════════════════════════
-     REWARD MODEL ABLATIONS
+     PEARSON'S CORRELATION (REWARD MODEL EVALUATION)
 ════════════════════════════════════════════════════════════ -->
 <section class="section is-light-alt" id="ablations">
   <div class="container">
-    <h2 class="section-heading">Reward Model Ablations</h2>
+    <h2 class="section-heading">Offline Reward Model Evaluations</h2>
     <div class="section-divider"></div>
 
-    <p style="text-align:center;color:#555;margin-bottom:2rem;max-width:700px;margin-left:auto;margin-right:auto;">
-      We ablate the key design choices in Robometer: the dual-objective training, the scale of pretraining data,
-      and the architecture choices. All ablations are evaluated on the held-out RBM-1M validation split and a
-      set of downstream tasks.
+    <div class="result-card" style="margin-bottom:2rem;">
+      <img src="assets/images/robometer_confusionmatrix.png" alt="Failure detection confusion matrix" style="width:100%; display:block; border-radius:8px 8px 0 0;">
+      <div class="card-caption">Confusion matrix for failure detection across methods and task categories.</div>
+    </div>
+
+    <p style="text-align:center;color:#555;margin-bottom:1.5rem;max-width:700px;margin-left:auto;margin-right:auto;">
+      Reward model correlation with human labels on RBM-EVAL. Higher is better. Best per row in <span style="color:#0a6b2e;font-weight:700;">green</span>.
     </p>
 
-    <!-- Ablation Table -->
-    <div class="results-table" style="margin-bottom:2rem;">
-      <table class="table is-fullwidth is-bordered is-hoverable">
-        <thead>
-          <tr>
-            <th rowspan="2">Model Variant</th>
-            <th colspan="2">Progress Prediction</th>
-            <th colspan="3">Downstream (avg. success %)</th>
-          </tr>
-          <tr>
-            <th>Spearman ↑</th>
-            <th>RMSE ↓</th>
-            <th>Online RL</th>
-            <th>Offline RL</th>
-            <th>Failure Det.</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="separator-row"><td colspan="6">Objective ablation</td></tr>
-          <tr>
-            <td>Progress Loss Only</td>
-            <td>XX.X</td><td>X.XX</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-          </tr>
-          <tr>
-            <td>Preference Loss Only</td>
-            <td>XX.X</td><td>X.XX</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-          </tr>
-          <tr class="ours">
-            <td><strong>Robometer (Both) ✓</strong></td>
-            <td class="best">XX.X</td><td class="best">X.XX</td>
-            <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
-          </tr>
-          <tr class="separator-row"><td colspan="6">Data scale ablation</td></tr>
-          <tr>
-            <td>10 K trajectories</td>
-            <td>XX.X</td><td>X.XX</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-          </tr>
-          <tr>
-            <td>100 K trajectories</td>
-            <td>XX.X</td><td>X.XX</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-          </tr>
-          <tr class="ours">
-            <td><strong>1 M trajectories (Robometer) ✓</strong></td>
-            <td class="best">XX.X</td><td class="best">X.XX</td>
-            <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
-          </tr>
-          <tr class="separator-row"><td colspan="6">Architecture ablation</td></tr>
-          <tr>
-            <td>w/o visual encoder pretraining</td>
-            <td>XX.X</td><td>X.XX</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-          </tr>
-          <tr>
-            <td>w/o temporal aggregation</td>
-            <td>XX.X</td><td>X.XX</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-          </tr>
-          <tr class="ours">
-            <td><strong>Robometer (full) ✓</strong></td>
-            <td class="best">XX.X</td><td class="best">X.XX</td>
-            <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Ablation figures -->
-    <div class="columns">
-      <div class="column is-6">
-        <div class="result-card">
-          <div class="placeholder-img" style="min-height:240px;">
-            <span class="icon-wrap"><i class="fas fa-chart-line"></i></span>
-            <strong>Scaling Curve</strong>
-            <span>Replace with ablation_scaling.png — downstream performance vs. training data size.</span>
-          </div>
-          <div class="card-caption">Data-scaling ablation: downstream success rate vs. number of training trajectories.</div>
-        </div>
-      </div>
-      <div class="column is-6">
-        <div class="result-card">
-          <div class="placeholder-img" style="min-height:240px;">
-            <span class="icon-wrap"><i class="fas fa-chart-bar"></i></span>
-            <strong>Objective Ablation Bar Chart</strong>
-            <span>Replace with ablation_objective.png — grouped bar chart comparing variants.</span>
-          </div>
-          <div class="card-caption">Objective ablation: each component of the dual loss contributes independently.</div>
-        </div>
+    <div class="eval-tabs" style="margin-bottom:1.5rem;">
+      <div class="tabs is-centered is-medium is-toggle">
+        <ul id="eval-split-tab-list">
+          <li class="is-active" data-eval-tab="id"><a>RBM-EVAL-ID</a></li>
+          <li data-eval-tab="ood"><a>RBM-EVAL-OOD</a></li>
+        </ul>
       </div>
     </div>
 
-    <!-- Qualitative reward curve videos -->
+    <!-- Panel: RBM-EVAL-ID -->
+    <div id="eval-panel-id" class="eval-tab-panel is-active">
+      <h3 class="title is-5" style="margin-bottom:1rem;text-align:center;color:#1a1a2e;">Pearson's correlation (in-distribution)</h3>
+      <div class="results-table" style="margin-bottom:2rem; overflow-x:auto;">
+        <table class="table is-fullwidth is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th rowspan="2">Dataset</th>
+              <th colspan="2">Baselines</th>
+              <th colspan="3">w/ RoboReward Training Data</th>
+              <th colspan="2">w/ our RBM-1M data</th>
+            </tr>
+            <tr>
+              <th>GVL</th>
+              <th>VLAC-8B</th>
+              <th>RoboReward-4B</th>
+              <th>RoboReward-8B</th>
+              <th>Robometer</th>
+              <th>ReWiND</th>
+              <th>Robometer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>RACER (Val)</td><td>0.131</td><td>0.156</td><td>0.491</td><td>0.652</td><td>0.937</td><td>0.561</td><td class="ours best"><strong>0.943</strong></td></tr>
+            <tr><td>OXE (BC-Z Eval)</td><td>0.142</td><td>−0.150</td><td>0.643</td><td>0.809</td><td>0.683</td><td>0.442</td><td class="ours best"><strong>0.922</strong></td></tr>
+            <tr><td>OXE (Berkeley Cable Routing Eval)</td><td>0.075</td><td>−0.425</td><td>0.657</td><td>0.801</td><td class="best">0.900</td><td>0.491</td><td class="ours">0.887</td></tr>
+            <tr><td>OXE (Bridge V2 Eval)</td><td>0.143</td><td>−0.875</td><td>0.891</td><td>0.898</td><td>0.633</td><td>0.526</td><td class="ours best"><strong>0.920</strong></td></tr>
+            <tr><td>OXE (Jaco Play Eval)</td><td>0.114</td><td>−0.151</td><td>0.793</td><td>0.785</td><td>0.861</td><td>0.550</td><td class="ours best"><strong>0.872</strong></td></tr>
+            <tr><td>OXE (Toto Eval)</td><td>0.254</td><td>−0.416</td><td>0.886</td><td>0.939</td><td class="best">0.947</td><td>0.340</td><td class="ours">0.930</td></tr>
+            <tr><td>OXE (Viola Eval)</td><td>0.264</td><td>0.479</td><td>0.915</td><td>0.896</td><td class="best">0.967</td><td>−0.014</td><td class="ours">0.947</td></tr>
+            <tr><td>Metaworld (Eval)</td><td>0.134</td><td>0.211</td><td>0.746</td><td>0.779</td><td>0.737</td><td>0.630</td><td class="ours best"><strong>0.900</strong></td></tr>
+            <tr><td>Libero (90)</td><td>0.254</td><td>0.217</td><td>0.874</td><td>0.846</td><td>0.912</td><td>0.592</td><td class="ours best"><strong>0.967</strong></td></tr>
+            <tr class="ours"><td><strong>Average</strong></td><td>0.168</td><td>0.089</td><td>0.766</td><td>0.823</td><td>0.842</td><td>0.458</td><td class="best"><strong>0.921</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Panel: RBM-EVAL-OOD (Pearson + Kendall) -->
+    <div id="eval-panel-ood" class="eval-tab-panel">
+      <h3 class="title is-5" style="margin-bottom:1rem;text-align:center;color:#1a1a2e;">Pearson's correlation (out-of-distribution)</h3>
+      <div class="results-table" style="margin-bottom:2rem; overflow-x:auto;">
+        <table class="table is-fullwidth is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th rowspan="2">Dataset</th>
+              <th colspan="2">Baselines</th>
+              <th colspan="3">w/ RoboReward Training Data</th>
+              <th colspan="2">w/ our RBM-1M data</th>
+            </tr>
+            <tr>
+              <th>GVL</th>
+              <th>VLAC-8B</th>
+              <th>RoboReward-4B</th>
+              <th>RoboReward-8B</th>
+              <th>Robometer</th>
+              <th>ReWiND</th>
+              <th>Robometer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Univ1 Franka</td><td>0.102</td><td>0.356</td><td>0.909</td><td>0.909</td><td class="best">0.959</td><td>0.772</td><td class="ours best"><strong>0.959</strong></td></tr>
+            <tr><td>Univ1 Koch</td><td>0.176</td><td>0.074</td><td>0.866</td><td>0.916</td><td class="best">0.969</td><td>0.585</td><td class="ours">0.950</td></tr>
+            <tr><td>Univ1 Trossen</td><td>0.542</td><td>0.256</td><td>0.781</td><td>0.726</td><td class="best">0.925</td><td>0.226</td><td class="ours">0.911</td></tr>
+            <tr><td>Univ1 xArm</td><td>0.282</td><td>0.454</td><td>0.896</td><td>0.914</td><td>0.951</td><td>0.435</td><td class="ours best"><strong>0.961</strong></td></tr>
+            <tr><td>Univ2 Franka</td><td>0.268</td><td>0.601</td><td>0.896</td><td>0.899</td><td>0.868</td><td>0.531</td><td class="ours best"><strong>0.954</strong></td></tr>
+            <tr><td>Univ3 SO101</td><td>0.203</td><td>0.511</td><td>0.926</td><td>0.930</td><td>0.888</td><td>0.497</td><td class="ours best"><strong>0.952</strong></td></tr>
+            <tr class="ours"><td><strong>Average</strong></td><td>0.262</td><td>0.375</td><td>0.879</td><td>0.882</td><td>0.927</td><td>0.508</td><td class="best"><strong>0.948</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="title is-5" style="margin-top:2rem;margin-bottom:1rem;text-align:center;color:#1a1a2e;">Kendall's τ (out-of-distribution)</h3>
+      <p style="text-align:center;color:#555;margin-bottom:1rem;font-size:0.9rem;">Kendall's rank correlation. Higher is better.</p>
+      <div class="results-table" style="margin-bottom:2rem; overflow-x:auto;">
+        <table class="table is-fullwidth is-bordered is-hoverable">
+          <thead>
+            <tr>
+              <th rowspan="2">Dataset</th>
+              <th colspan="3">Baselines</th>
+              <th colspan="3">w/ RoboReward Training Data</th>
+              <th colspan="2">w/ our RBM-1M data</th>
+            </tr>
+            <tr>
+              <th>GVL</th>
+              <th>VLAC-2B</th>
+              <th>VLAC-8B</th>
+              <th>RoboReward-4B</th>
+              <th>RoboReward-8B</th>
+              <th>Robometer</th>
+              <th>ReWiND</th>
+              <th>Robometer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Univ1 Franka</td><td>0.250</td><td>0.292</td><td>0.271</td><td>0.625</td><td>0.625</td><td>0.583</td><td>−0.125</td><td class="ours best"><strong>0.646</strong></td></tr>
+            <tr><td>Univ1 Koch</td><td>−0.008</td><td>0.167</td><td>0.064</td><td>0.332</td><td>0.264</td><td class="best">0.533</td><td>0.336</td><td class="ours">0.471</td></tr>
+            <tr><td>Univ1 Trossen</td><td>0.292</td><td>−0.111</td><td>−0.417</td><td>0.333</td><td>0.389</td><td>0.646</td><td>0.028</td><td class="ours best"><strong>0.653</strong></td></tr>
+            <tr><td>Univ1 xArm</td><td>0.056</td><td>0.167</td><td>0.139</td><td>0.528</td><td>0.347</td><td>0.403</td><td>−0.167</td><td class="ours best"><strong>0.694</strong></td></tr>
+            <tr><td>Univ2 Franka</td><td>0.306</td><td>−0.017</td><td>0.072</td><td>0.494</td><td>0.396</td><td>0.479</td><td>0.080</td><td class="ours best"><strong>0.601</strong></td></tr>
+            <tr><td>Univ3 SO101</td><td>0.300</td><td>−0.033</td><td>0.167</td><td>0.700</td><td>0.767</td><td>0.667</td><td>−0.067</td><td class="ours best"><strong>0.867</strong></td></tr>
+            <tr class="ours"><td><strong>Average</strong></td><td>0.199</td><td>0.077</td><td>0.049</td><td>0.502</td><td>0.465</td><td>0.552</td><td>0.014</td><td class="best"><strong>0.655</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Qualitative plots -->
     <h3 class="title is-5" style="margin-top:2rem;text-align:center;color:#1a1a2e;">Qualitative Reward Curves</h3>
     <p style="text-align:center;color:#555;margin-bottom:1.5rem;font-size:0.95rem;">
       Reward curves predicted by Robometer and ablated variants on example trajectories.
     </p>
-    <div class="columns is-multiline">
-      <div class="column is-4">
+    <div class="columns">
+      <div class="column is-12">
         <div class="result-card">
-          <div class="placeholder-video" style="min-height:180px;">
-            <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-            <strong>Expert Trajectory</strong>
-            <span style="font-size:0.8rem;">ablation_expert_traj.mp4</span>
-          </div>
-          <div class="card-caption">Expert trajectory — reward monotonically increases to 1.0.</div>
-        </div>
-      </div>
-      <div class="column is-4">
-        <div class="result-card">
-          <div class="placeholder-video" style="min-height:180px;">
-            <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-            <strong>Suboptimal Trajectory</strong>
-            <span style="font-size:0.8rem;">ablation_suboptimal_traj.mp4</span>
-          </div>
-          <div class="card-caption">Suboptimal trajectory — reward rises but plateaus below 1.0.</div>
-        </div>
-      </div>
-      <div class="column is-4">
-        <div class="result-card">
-          <div class="placeholder-video" style="min-height:180px;">
-            <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-            <strong>Failed Trajectory</strong>
-            <span style="font-size:0.8rem;">ablation_failure_traj.mp4</span>
-          </div>
-          <div class="card-caption">Failed trajectory — reward remains low throughout the episode.</div>
+          <img src="assets/images/qualitative_plots.png" alt="Qualitative reward plots" style="width:100%; display:block; border-radius:8px 8px 0 0;">
+          <div class="card-caption">Qualitative reward curves across expert, suboptimal, and failed trajectories.</div>
         </div>
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     LOW-RANK FINETUNING
+════════════════════════════════════════════════════════════ -->
+<section class="section is-white-alt" id="finetuning">
+  <div class="container">
+    <h2 class="section-heading">Low-rank finetuning of Robometer</h2>
+    <div class="section-divider"></div>
+
+    <p style="color:#555;margin-bottom:1.5rem;max-width:800px;">
+      We finetune Robometer on the <a href="https://huggingface.co/datasets/MINT-SJTU/RoboFAC-dataset" target="_blank" rel="noopener">RoboFAC dataset</a>, a multimodal VQA dataset for robotic failure analysis and correction with over 10,000 robot manipulation videos and 78K+ question-answer pairs. Below we compare zero-shot and finetuned Robometer-4B (LoRA and full fine-tuning) to Qwen3-VL baselines on VOC correlation, Kendall τ, and success–failure separation.
+    </p>
+
+    <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
+      <table class="table is-fullwidth is-bordered is-hoverable">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>VOC r ↑</th>
+            <th>Kendall τ ↑</th>
+            <th>Succ-Fail Diff ↑</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Robometer-4B (Zero-shot)</td><td>0.652</td><td>0.436</td><td>0.141</td></tr>
+          <tr><td>Qwen3-VL (LoRA)</td><td>0.701</td><td>0.067</td><td>0.005</td></tr>
+          <tr><td>Qwen3-VL (Full FT)</td><td>0.727</td><td>0.102</td><td>0.008</td></tr>
+          <tr><td>Robometer-4B (LoRA)</td><td>0.875</td><td>0.786</td><td>0.271</td></tr>
+          <tr class="ours"><td><strong>Robometer-4B (FFT)</strong></td><td class="best"><strong>0.884</strong></td><td class="best"><strong>0.802</strong></td><td class="best"><strong>0.302</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -962,35 +1009,31 @@
           The Robometer reward signal is thresholded to detect trajectory failures in real-robot experiments.
           Evaluated with precision, recall and F1 against human-labeled outcomes.
         </div>
-        <div class="results-table" style="margin-bottom:1.5rem;">
-          <table class="table is-fullwidth is-bordered is-hoverable">
+        <p style="margin-bottom:1rem;font-size:0.95rem;color:#555;">Per-task TPR, TNR, and F1 for failure detection. Best F1 per task in <span style="color:#0a6b2e;font-weight:700;">green</span>.</p>
+        <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
+          <table class="table is-fullwidth is-bordered is-hoverable failure-detection-task-table">
             <thead>
               <tr>
-                <th>Method</th>
-                <th>Precision ↑</th>
-                <th>Recall ↑</th>
-                <th>F1 ↑</th>
-                <th>AUC-ROC ↑</th>
+                <th rowspan="2">Task</th>
+                <th colspan="3">GPT-5-mini</th>
+                <th colspan="3">RoboReward-4B</th>
+                <th colspan="3">Robometer</th>
+              </tr>
+              <tr>
+                <th>TPR</th><th>TNR</th><th>F1</th>
+                <th>TPR</th><th>TNR</th><th>F1</th>
+                <th>TPR</th><th>TNR</th><th>F1</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>CLIP similarity</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>VLM-based (GPT-4V)</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>Prior reward model</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr class="ours">
-                <td><strong>Robometer (ours) ✓</strong></td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
-              </tr>
+              <tr><td>move banana</td><td>0.31</td><td>1.00</td><td>0.48</td><td>1.00</td><td>0.62</td><td>0.91</td><td>1.00</td><td>0.75</td><td class="best"><strong>0.94</strong></td></tr>
+              <tr><td>move mouse</td><td>0.80</td><td>1.00</td><td>0.89</td><td>0.80</td><td>0.75</td><td>0.80</td><td>1.00</td><td>0.75</td><td class="best"><strong>0.91</strong></td></tr>
+              <tr><td>pour pebble</td><td>0.14</td><td>1.00</td><td>0.25</td><td>0.57</td><td>1.00</td><td>0.73</td><td>0.71</td><td>1.00</td><td class="best"><strong>0.83</strong></td></tr>
+              <tr><td>fold towel</td><td>0.15</td><td>1.00</td><td>0.27</td><td>0.31</td><td>0.67</td><td>0.40</td><td>0.54</td><td>0.56</td><td class="best"><strong>0.58</strong></td></tr>
+              <tr><td>pull tissue</td><td>0.00</td><td>1.00</td><td>0.00</td><td>0.55</td><td>0.00</td><td>0.57</td><td>0.73</td><td>0.50</td><td class="best"><strong>0.76</strong></td></tr>
+              <tr><td>put spoon</td><td>0.14</td><td>1.00</td><td>0.25</td><td>0.57</td><td>1.00</td><td class="best"><strong>0.73</strong></td><td>0.57</td><td>1.00</td><td>0.73</td></tr>
+              <tr><td>stir pot</td><td>0.09</td><td>1.00</td><td>0.17</td><td>0.91</td><td>1.00</td><td class="best"><strong>0.95</strong></td><td>0.82</td><td>1.00</td><td>0.90</td></tr>
+              <tr class="ours"><td><strong>Average</strong></td><td>0.20</td><td>1.00</td><td>0.33</td><td>0.69</td><td>0.63</td><td>0.74</td><td>0.77</td><td>0.70</td><td class="best"><strong>0.81</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -1015,16 +1058,6 @@
               <div class="card-caption">Robometer correctly identifies a successful trajectory.</div>
             </div>
           </div>
-          <div class="column is-12">
-            <div class="result-card">
-              <div class="placeholder-img" style="min-height:200px;">
-                <span class="icon-wrap"><i class="fas fa-chart-area"></i></span>
-                <strong>ROC Curves</strong>
-                <span>Replace with failure_det_roc.png</span>
-              </div>
-              <div class="card-caption">ROC curves across all methods and task categories for failure detection.</div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -1035,48 +1068,35 @@
           Robometer ranks candidate demonstrations from a large pool; the top-K retrieved trajectories
           are used to train an imitation learning policy (e.g., Diffusion Policy / ACT).
         </div>
-        <div class="results-table" style="margin-bottom:1.5rem;">
+        <div class="result-card" style="margin-bottom:1.5rem;">
+          <img src="assets/images/robometer_retrieval.jpeg" alt="Data retrieval and imitation learning results" style="width:100%; display:block; border-radius:8px 8px 0 0;">
+        </div>
+        <h4 class="title is-6" style="margin-bottom:0.75rem;color:#1a1a2e;">Task success rates</h4>
+        <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
           <table class="table is-fullwidth is-bordered is-hoverable">
             <thead>
               <tr>
-                <th>Retrieval Method</th>
-                <th>Task A</th>
-                <th>Task B</th>
-                <th>Task C</th>
-                <th>Task D</th>
-                <th>Average ↑</th>
+                <th>Task</th>
+                <th>π₀.₅ Base</th>
+                <th>SigLIP</th>
+                <th>STRAP</th>
+                <th>RoboReward-4B</th>
+                <th>Robometer-Pref</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Random selection</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>CLIP embedding similarity</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>Human-labeled quality</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr class="ours">
-                <td><strong>Robometer (ours) ✓</strong></td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
-                <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
-              </tr>
+              <tr><td><strong>Stir Pot</strong></td><td>0/20</td><td>3/20</td><td>2/20</td><td>0/20</td><td class="best"><strong>13/20</strong></td></tr>
+              <tr><td><strong>Open Red Drawer</strong></td><td>0/20</td><td>0/20</td><td>3/20</td><td>0/20</td><td class="best"><strong>14/20</strong></td></tr>
             </tbody>
           </table>
         </div>
         <div class="columns is-multiline">
           <div class="column is-4">
             <div class="result-card">
-              <div class="placeholder-video" style="min-height:180px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Retrieved Demo — Task A</strong>
-                <span style="font-size:0.8rem;">retrieval_taskA.mp4</span>
-              </div>
-              <div class="card-caption">Top-ranked demonstration retrieved by Robometer for Task A.</div>
+              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0;">
+                <source src="assets/stir_pot_compressed.mp4" type="video/mp4">
+              </video>
+              <div class="card-caption">Stir Pot — top-ranked demonstration retrieved by Robometer.</div>
             </div>
           </div>
           <div class="column is-4">
@@ -1159,6 +1179,16 @@
       /* activate clicked tab */
       this.classList.add('is-active');
       document.getElementById('tab-' + this.dataset.tab).style.display = 'block';
+    });
+  });
+
+  /* Eval split tabs (RBM-EVAL-ID / OOD) */
+  document.querySelectorAll('#eval-split-tab-list li').forEach(function (li) {
+    li.addEventListener('click', function () {
+      document.querySelectorAll('#eval-split-tab-list li').forEach(function (el) { el.classList.remove('is-active'); });
+      document.querySelectorAll('.eval-tab-panel').forEach(function (el) { el.classList.remove('is-active'); });
+      this.classList.add('is-active');
+      document.getElementById('eval-panel-' + this.dataset.evalTab).classList.add('is-active');
     });
   });
 
