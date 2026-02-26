@@ -174,12 +174,28 @@
       text-align: center;
       vertical-align: middle;
     }
-    .results-table td { text-align: center; vertical-align: middle; }
-    .results-table tr:nth-child(even) td { background: #f4f6fb; }
+    .results-table td { text-align: center; vertical-align: middle; background: #fff !important; }
+    .results-table tr.ours td { background: #eef3ff !important; }
     .results-table .best { font-weight: 700; color: #0a6b2e; background-color: #e6f4ea !important; }
+    /* Override Bulma .table / is-hoverable: no alternating rows, force white then ours/best */
+    .results-table table.table tbody tr td { background: #fff !important; }
+    .results-table table.table tbody tr:nth-child(even) td { background: #fff !important; }
+    .results-table table.table tbody tr:nth-child(odd) td { background: #fff !important; }
+    .results-table table.table tbody tr.ours td { background: #eef3ff !important; }
+    .results-table table.table td.best,
+    .results-table table.table td.ours.best { background-color: #e6f4ea !important; color: #0a6b2e !important; font-weight: 700 !important; }
+    /* Force all "best in row" cells green by default (beat Bulma .table) */
+    body .results-table table.table tbody tr td.best,
+    body .results-table table.table tbody tr td.ours.best { background-color: #e6f4ea !important; color: #0a6b2e !important; font-weight: 700 !important; }
+    .results-table table.table td.best strong { color: #0a6b2e !important; }
+    .results-table table.table tbody tr:hover td.best,
+    .results-table table.table tbody tr:hover td.ours.best { background-color: #e6f4ea !important; }
+    .results-table table.table tbody tr.ours:hover td { background: #eef3ff !important; }
     .failure-detection-task-table th:nth-child(4), .failure-detection-task-table th:nth-child(7), .failure-detection-task-table th:nth-child(10),
     .failure-detection-task-table td:nth-child(4), .failure-detection-task-table td:nth-child(7), .failure-detection-task-table td:nth-child(10) { background-color: #f0f0f0; }
-    .results-table .ours { background: #eef3ff !important; }
+    .task-success-rates-table td.best { background-color: #e6f4ea !important; color: #0a6b2e !important; font-weight: 700 !important; }
+    .task-success-rates-table td.best strong { color: #0a6b2e !important; }
+    .results-table td.ours { background: #eef3ff !important; }
     .results-table .separator-row td {
       background: #e8ecf5;
       font-style: italic;
@@ -555,7 +571,7 @@
 
     <div class="result-card" style="margin-bottom:2rem;">
       <img src="assets/images/robometer_confusionmatrix.png" alt="Failure detection confusion matrix" style="width:100%; display:block; border-radius:8px 8px 0 0;">
-      <div class="card-caption">Confusion matrix for failure detection across methods and task categories.</div>
+      <div class="card-caption"><strong>Video-language reward confusion matrix.</strong> For each task (unseen data), we score all video–instruction pairs. Robometer yields the most diagonal matrix, indicating strong alignment between demos and instructions. Values are column-normalized diagonal means (fraction of reward on aligned pairs).</div>
     </div>
 
     <p style="text-align:center;color:#555;margin-bottom:1.5rem;max-width:700px;margin-left:auto;margin-right:auto;">
@@ -573,7 +589,6 @@
 
     <!-- Panel: RBM-EVAL-ID -->
     <div id="eval-panel-id" class="eval-tab-panel is-active">
-      <h3 class="title is-5" style="margin-bottom:1rem;text-align:center;color:#1a1a2e;">Pearson's correlation (in-distribution)</h3>
       <div class="results-table" style="margin-bottom:2rem; overflow-x:auto;">
         <table class="table is-fullwidth is-bordered is-hoverable">
           <thead>
@@ -594,14 +609,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>RACER (Val)</td><td>0.131</td><td>0.156</td><td>0.491</td><td>0.652</td><td>0.937</td><td>0.561</td><td class="ours best"><strong>0.943</strong></td></tr>
-            <tr><td>OXE (BC-Z Eval)</td><td>0.142</td><td>−0.150</td><td>0.643</td><td>0.809</td><td>0.683</td><td>0.442</td><td class="ours best"><strong>0.922</strong></td></tr>
-            <tr><td>OXE (Berkeley Cable Routing Eval)</td><td>0.075</td><td>−0.425</td><td>0.657</td><td>0.801</td><td class="best">0.900</td><td>0.491</td><td class="ours">0.887</td></tr>
-            <tr><td>OXE (Bridge V2 Eval)</td><td>0.143</td><td>−0.875</td><td>0.891</td><td>0.898</td><td>0.633</td><td>0.526</td><td class="ours best"><strong>0.920</strong></td></tr>
-            <tr><td>OXE (Jaco Play Eval)</td><td>0.114</td><td>−0.151</td><td>0.793</td><td>0.785</td><td>0.861</td><td>0.550</td><td class="ours best"><strong>0.872</strong></td></tr>
-            <tr><td>OXE (Toto Eval)</td><td>0.254</td><td>−0.416</td><td>0.886</td><td>0.939</td><td class="best">0.947</td><td>0.340</td><td class="ours">0.930</td></tr>
-            <tr><td>OXE (Viola Eval)</td><td>0.264</td><td>0.479</td><td>0.915</td><td>0.896</td><td class="best">0.967</td><td>−0.014</td><td class="ours">0.947</td></tr>
-            <tr><td>Metaworld (Eval)</td><td>0.134</td><td>0.211</td><td>0.746</td><td>0.779</td><td>0.737</td><td>0.630</td><td class="ours best"><strong>0.900</strong></td></tr>
+            <tr><td>RACER</td><td>0.131</td><td>0.156</td><td>0.491</td><td>0.652</td><td>0.937</td><td>0.561</td><td class="ours best"><strong>0.943</strong></td></tr>
+            <tr><td>OXE (BC-Z)</td><td>0.142</td><td>−0.150</td><td>0.643</td><td>0.809</td><td>0.683</td><td>0.442</td><td class="ours best"><strong>0.922</strong></td></tr>
+            <tr><td>OXE (Berkeley Cable Routing)</td><td>0.075</td><td>−0.425</td><td>0.657</td><td>0.801</td><td class="best">0.900</td><td>0.491</td><td class="ours">0.887</td></tr>
+            <tr><td>OXE (Bridge V2)</td><td>0.143</td><td>−0.875</td><td>0.891</td><td>0.898</td><td>0.633</td><td>0.526</td><td class="ours best"><strong>0.920</strong></td></tr>
+            <tr><td>OXE (Jaco Play)</td><td>0.114</td><td>−0.151</td><td>0.793</td><td>0.785</td><td>0.861</td><td>0.550</td><td class="ours best"><strong>0.872</strong></td></tr>
+            <tr><td>OXE (Toto)</td><td>0.254</td><td>−0.416</td><td>0.886</td><td>0.939</td><td class="best">0.947</td><td>0.340</td><td class="ours">0.930</td></tr>
+            <tr><td>OXE (Viola)</td><td>0.264</td><td>0.479</td><td>0.915</td><td>0.896</td><td class="best">0.967</td><td>−0.014</td><td class="ours">0.947</td></tr>
+            <tr><td>Metaworld</td><td>0.134</td><td>0.211</td><td>0.746</td><td>0.779</td><td>0.737</td><td>0.630</td><td class="ours best"><strong>0.900</strong></td></tr>
             <tr><td>Libero (90)</td><td>0.254</td><td>0.217</td><td>0.874</td><td>0.846</td><td>0.912</td><td>0.592</td><td class="ours best"><strong>0.967</strong></td></tr>
             <tr class="ours"><td><strong>Average</strong></td><td>0.168</td><td>0.089</td><td>0.766</td><td>0.823</td><td>0.842</td><td>0.458</td><td class="best"><strong>0.921</strong></td></tr>
           </tbody>
@@ -611,7 +626,6 @@
 
     <!-- Panel: RBM-EVAL-OOD (Pearson + Kendall) -->
     <div id="eval-panel-ood" class="eval-tab-panel">
-      <h3 class="title is-5" style="margin-bottom:1rem;text-align:center;color:#1a1a2e;">Pearson's correlation (out-of-distribution)</h3>
       <div class="results-table" style="margin-bottom:2rem; overflow-x:auto;">
         <table class="table is-fullwidth is-bordered is-hoverable">
           <thead>
@@ -632,7 +646,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>Univ1 Franka</td><td>0.102</td><td>0.356</td><td>0.909</td><td>0.909</td><td class="best">0.959</td><td>0.772</td><td class="ours best"><strong>0.959</strong></td></tr>
+            <tr><td>Univ1 Franka</td><td>0.102</td><td>0.356</td><td>0.909</td><td>0.909</td><td>0.959</td><td>0.772</td><td class="ours best"><strong>0.959</strong></td></tr>
             <tr><td>Univ1 Koch</td><td>0.176</td><td>0.074</td><td>0.866</td><td>0.916</td><td class="best">0.969</td><td>0.585</td><td class="ours">0.950</td></tr>
             <tr><td>Univ1 Trossen</td><td>0.542</td><td>0.256</td><td>0.781</td><td>0.726</td><td class="best">0.925</td><td>0.226</td><td class="ours">0.911</td></tr>
             <tr><td>Univ1 xArm</td><td>0.282</td><td>0.454</td><td>0.896</td><td>0.914</td><td>0.951</td><td>0.435</td><td class="ours best"><strong>0.961</strong></td></tr>
@@ -642,7 +656,7 @@
           </tbody>
         </table>
       </div>
-      <h3 class="title is-5" style="margin-top:2rem;margin-bottom:1rem;text-align:center;color:#1a1a2e;">Kendall's τ (out-of-distribution)</h3>
+      <h3 class="title is-5" style="margin-top:2rem;margin-bottom:1rem;text-align:center;color:#1a1a2e;">Kendall's $\tau$ (out-of-distribution)</h3>
       <p style="text-align:center;color:#555;margin-bottom:1rem;font-size:0.9rem;">Kendall's rank correlation. Higher is better.</p>
       <div class="results-table" style="margin-bottom:2rem; overflow-x:auto;">
         <table class="table is-fullwidth is-bordered is-hoverable">
@@ -699,11 +713,11 @@
 ════════════════════════════════════════════════════════════ -->
 <section class="section is-white-alt" id="finetuning">
   <div class="container">
-    <h2 class="section-heading">Low-rank finetuning of Robometer</h2>
+    <h2 class="section-heading">Low-rank Finetuning of Robometer</h2>
     <div class="section-divider"></div>
 
-    <p style="color:#555;margin-bottom:1.5rem;max-width:800px;">
-      We finetune Robometer on the <a href="https://huggingface.co/datasets/MINT-SJTU/RoboFAC-dataset" target="_blank" rel="noopener">RoboFAC dataset</a>, a multimodal VQA dataset for robotic failure analysis and correction with over 10,000 robot manipulation videos and 78K+ question-answer pairs. Below we compare zero-shot and finetuned Robometer-4B (LoRA and full fine-tuning) to Qwen3-VL baselines on VOC correlation, Kendall τ, and success–failure separation.
+    <p style="color:#555;margin-bottom:1.5rem;max-width:600px;margin-left:auto;margin-right:auto;text-align:center;">
+      We finetune Robometer on the <a href="https://huggingface.co/datasets/MINT-SJTU/RoboFAC-dataset" target="_blank" rel="noopener">RoboFAC dataset</a> (10K+ videos, 78K+ QA pairs) and compare zero-shot and finetuned Robometer-4B to Qwen3-VL baselines.
     </p>
 
     <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
@@ -711,8 +725,8 @@
         <thead>
           <tr>
             <th>Method</th>
-            <th>VOC r ↑</th>
-            <th>Kendall τ ↑</th>
+            <th>VOC $r$ ↑</th>
+            <th>Kendall $\tau$ ↑</th>
             <th>Succ-Fail Diff ↑</th>
           </tr>
         </thead>
@@ -721,7 +735,7 @@
           <tr><td>Qwen3-VL (LoRA)</td><td>0.701</td><td>0.067</td><td>0.005</td></tr>
           <tr><td>Qwen3-VL (Full FT)</td><td>0.727</td><td>0.102</td><td>0.008</td></tr>
           <tr><td>Robometer-4B (LoRA)</td><td>0.875</td><td>0.786</td><td>0.271</td></tr>
-          <tr class="ours"><td><strong>Robometer-4B (FFT)</strong></td><td class="best"><strong>0.884</strong></td><td class="best"><strong>0.802</strong></td><td class="best"><strong>0.302</strong></td></tr>
+          <tr class="ours"><td><strong>Robometer-4B (Full FT)</strong></td><td class="best"><strong>0.884</strong></td><td class="best"><strong>0.802</strong></td><td class="best"><strong>0.302</strong></td></tr>
         </tbody>
       </table>
     </div>
@@ -890,31 +904,24 @@
           <table class="table is-fullwidth is-bordered is-hoverable">
             <thead>
               <tr>
-                <th>Method</th>
-                <th>Dataset A</th>
-                <th>Dataset B</th>
-                <th>Dataset C</th>
-                <th>Dataset D</th>
-                <th>Average ↑</th>
+                <th>Task</th>
+                <th>Sparse</th>
+                <th>RoboReward</th>
+                <th>Robometer</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Sparse reward (env)</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                <td>Put the bread in the oven (Setting 1)</td>
+                <td>0.50</td><td>0.55</td><td class="best"><strong>0.85</strong></td>
               </tr>
               <tr>
-                <td>OPAL</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>PEARL</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                <td>Put red bowl on the blue plate (Setting 2)</td>
+                <td>0.05</td><td>0.00</td><td class="best"><strong>0.15</strong></td>
               </tr>
               <tr class="ours">
-                <td><strong>Robometer (ours) ✓</strong></td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
-                <td class="best">XX.X</td><td class="best">XX.X</td><td class="best">XX.X</td>
+                <td><strong>Average</strong></td>
+                <td>0.275</td><td>0.275</td><td class="best"><strong>0.50</strong></td>
               </tr>
             </tbody>
           </table>
@@ -1068,16 +1075,16 @@
           Robometer ranks candidate demonstrations from a large pool; the top-K retrieved trajectories
           are used to train an imitation learning policy (e.g., Diffusion Policy / ACT).
         </div>
-        <div class="result-card" style="margin-bottom:1.5rem;">
+        <div class="result-card" style="margin-bottom:1.5rem;max-width:65%;margin-left:auto;margin-right:auto;">
           <img src="assets/images/robometer_retrieval.jpeg" alt="Data retrieval and imitation learning results" style="width:100%; display:block; border-radius:8px 8px 0 0;">
         </div>
-        <h4 class="title is-6" style="margin-bottom:0.75rem;color:#1a1a2e;">Task success rates</h4>
-        <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
+        <p style="text-align:center; color:#555; margin-bottom:1rem; font-size:0.95rem;">Task success rates of LoRA-finetuned $\pi_{0.5}$ on 100 retrieved segments with highest similarity.</p>
+        <div class="results-table task-success-rates-table" style="margin-bottom:1.5rem; overflow-x:auto; max-width:75%; margin-left:auto; margin-right:auto;">
           <table class="table is-fullwidth is-bordered is-hoverable">
             <thead>
               <tr>
                 <th>Task</th>
-                <th>π₀.₅ Base</th>
+                <th>$\pi_{0.5}$ Base</th>
                 <th>SigLIP</th>
                 <th>STRAP</th>
                 <th>RoboReward-4B</th>
@@ -1094,7 +1101,7 @@
           <div class="column is-4">
             <div class="result-card">
               <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0;">
-                <source src="assets/stir_pot_compressed.mp4" type="video/mp4">
+                <source src="assets/images/stir_pot_compressed.mp4" type="video/mp4">
               </video>
               <div class="card-caption">Stir Pot — top-ranked demonstration retrieved by Robometer.</div>
             </div>
