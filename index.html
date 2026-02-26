@@ -279,6 +279,7 @@
     }
     .highlight-box.is-info-light { background: #eef5ff; border-left: 4px solid #3273dc; }
     .highlight-box.is-success-light { background: #effaf3; border-left: 4px solid #23d160; }
+    .highlight-box.is-warning-light { background: #fff3e0; border-left: 4px solid #ffa500; }
 
     /* ── Sub-tabs (nested within experiment tabs) ──────────── */
     .sub-tabs .tabs ul { border-bottom: none; }
@@ -319,7 +320,7 @@
     </div>
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="#abstract">Abstract</a>
+        <!--<a class="navbar-item" href="#abstract">Abstract</a>-->
         <a class="navbar-item" href="#method">Method</a>
         <a class="navbar-item" href="#dataset">Dataset</a>
         <a class="navbar-item" href="#ablations">Offline Eval</a>
@@ -478,7 +479,31 @@
         <div class="highlight-box is-success-light">
           <strong>Trajectory-Comparison Preference Loss</strong><br />
           Imposes global ordering constraints across pairs of trajectories of the same task, enabling robust learning
-          from suboptimal and failed data via a Bradley–Terry ranking objective.
+          from suboptimal and failed data via a preference comparison objective.
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-vcentered" style="margin-bottom:2rem;">
+      <div class="columns-item column is-7">
+        <img src="assets/images/robometer_training_objectives.jpeg" alt="Robometer Training Objectives and Types" style="width:100%; display:block; border-radius:8px;">
+      </div>
+      <div class="column is-5">
+        <h3 class="title is-4" style="color:#1a1a2e;">Model Training Inputs and Objectives</h3>
+        <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
+          <strong>Different Expertise</strong><br />
+            We pair together expert and suboptimal trajectories of the same task, training per-frame progress/success prediction on the expert trajectory and predicting 
+            training the model to prefer the expert trajectory.
+        </div>
+        <div class="highlight-box is-warning-light" style="margin-bottom:1rem;">
+          <strong>Different Tasks</strong><br />
+            We pair trajectories of different tasks together, training the model to prefer the video corresponding to the input language instruction.
+            We can train per-frame progress/success on 
+        </div>
+        <div class="highlight-box is-success-light">
+          <strong>Augmented Trajectory</strong><br />
+            We also augment a given trajectory to simulate failures, for example by using <a href="rewind-reward.github.io">video rewind</a>.
+            The model is trained to prefer the original, unaugmented trajectory, and per-frame progress/success prediction can occur on either trajectory.
         </div>
       </div>
     </div>
