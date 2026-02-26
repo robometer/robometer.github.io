@@ -1318,8 +1318,8 @@
       <div id="tab-data-retrieval" class="tab-content" style="display:none;">
         <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
           <strong>Setting.</strong>
-          Robometer ranks candidate demonstrations from a large pool; the top-K retrieved trajectories
-          are used to train an imitation learning policy (e.g., Diffusion Policy / ACT).
+          Given a play dataset, Robometer retrieves the most relevant subtrajectories for a task instruction using (i) the preference objective via pairwise trajectory 
+          comparisons, or (ii) the progress objective by computing per-timestep progress values and each trajectory’s value–order correlation.
         </div>
         <div class="result-card" style="margin-bottom:1.5rem;max-width:75%;margin-left:auto;margin-right:auto;">
           <img src="assets/retrieval/retrieval_setup.png" alt="Data retrieval and imitation learning results" style="width:100%; display:block; border-radius:8px 8px 0 0;">
