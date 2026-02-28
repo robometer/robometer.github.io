@@ -38,12 +38,16 @@
 
   <style>
     /* ── General ─────────────────────────────────────────────── */
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      overscroll-behavior-y: none; /* prevent pull-up at top so white navbar doesn’t show */
+    }
 
     body {
       font-family: "Google Sans", "Segoe UI", Roboto, Arial, sans-serif;
       background: #fff;
       color: #333;
+      overscroll-behavior-y: none;
     }
 
     /* ── Page progress bar (USC red) ───────────────────────────── */
@@ -199,6 +203,12 @@
       .hero-teaser-wrap { min-height: auto; padding: 3rem 0; }
       .hero-teaser-wrap .hero-body { padding: 2rem 1rem 4.5rem; }
       .scroll-indicator { bottom: 1rem; font-size: 0.7rem; }
+    }
+
+    /* At a Glance teaser: 60% on desktop, full width on small screens */
+    .teaser-video-wrap { max-width: 60%; margin-left: auto; margin-right: auto; }
+    @media (max-width: 768px) {
+      .teaser-video-wrap { max-width: 100%; }
     }
 
     .title.paper-title {
@@ -466,6 +476,7 @@
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-end">
         <!--<a class="navbar-item" href="#abstract">Abstract</a>-->
+        <a class="navbar-item" href="#at-a-glance">At a Glance</a>
         <a class="navbar-item" href="#method">Method</a>
         <a class="navbar-item" href="#dataset">Dataset</a>
         <a class="navbar-item" href="#ablations">Offline Eval</a>
@@ -483,7 +494,8 @@
 ════════════════════════════════════════════════════════════ -->
 <section class="hero hero-teaser-wrap" id="hero-video">
   <video id="teaser-video" class="teaser-video-bg" muted playsinline autoplay loop preload="auto">
-    <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
+    <source src="assets/website_teaser_compressed.mp4" type="video/mp4">
+    <source src="assets/website_teaser_compressed.mov" type="video/quicktime">
   </video>
   <div class="teaser-overlay" aria-hidden="true"></div>
   <button type="button" class="scroll-indicator" id="scroll-indicator-btn" aria-label="Scroll to content">
@@ -571,6 +583,17 @@
 
       </div>
     </div>
+  </div>
+</section>
+
+<!-- At a Glance – teaser video (below hero, after scroll) -->
+<section class="section is-light-alt" id="at-a-glance" style="padding: 2rem 1.5rem;">
+  <div class="container teaser-video-wrap">
+    <h2 class="section-heading">At a Glance</h2>
+    <div class="section-divider"></div>
+    <video controls muted playsinline autoplay loop preload="auto" style="width:100%; border-radius:8px; display:block;">
+      <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
+    </video>
   </div>
 </section>
 
@@ -1621,14 +1644,18 @@
     }
   })();
 
-  /* Navbar: transparent over video, solid when scrolled past (RISE-style) */
+  /* Navbar: transparent over video / first screen, white only when well past hero */
   (function () {
     var navbar = document.querySelector('.navbar');
     var hero = document.getElementById('hero-video');
     if (!navbar || !hero) return;
+    var HERO_ZONE = 1.2; /* treat first 1.2 viewports as “hero zone” – navbar stays transparent */
     function updateNavbar() {
+      var scrollY = window.scrollY || document.documentElement.scrollTop;
+      var viewportH = window.innerHeight;
       var heroRect = hero.getBoundingClientRect();
-      if (heroRect.bottom > 0) {
+      var inHeroZone = scrollY <= 0 || scrollY < viewportH * HERO_ZONE || heroRect.bottom > 0;
+      if (inHeroZone) {
         navbar.classList.add('navbar-over-video');
       } else {
         navbar.classList.remove('navbar-over-video');
@@ -1659,7 +1686,7 @@
   /* Scroll button: smooth scroll without changing URL (avoids #method in shared links) */
   (function () {
     var btn = document.getElementById('scroll-indicator-btn');
-    var target = document.getElementById('method');
+    var target = document.getElementById('at-a-glance');
     if (btn && target) {
       btn.addEventListener('click', function () {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
