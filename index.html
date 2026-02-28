@@ -40,6 +40,7 @@
     /* ── General ─────────────────────────────────────────────── */
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 3.25rem;
       overscroll-behavior-y: none; /* prevent pull-up at top so white navbar doesn’t show */
     }
 
@@ -73,8 +74,10 @@
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(6px);
       box-shadow: 0 2px 8px rgba(0,0,0,.07);
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       transition: background 0.3s ease, box-shadow 0.3s ease;
     }
@@ -82,8 +85,10 @@
     .navbar-item:hover { color: #3273dc !important; }
     /* Transparent navbar when over video (RISE-style); background reappears on scroll */
     .navbar.navbar-over-video {
-      background: transparent;
-      box-shadow: none;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      box-shadow: none !important;
     }
     .navbar.navbar-over-video .navbar-item { color: rgba(255,255,255,0.9) !important; }
     .navbar.navbar-over-video .navbar-item:hover { color: #fff !important; }
@@ -221,7 +226,7 @@
 
     /* At a Glance teaser: 60% on desktop, full width when shrunk or on phone */
     #at-a-glance .teaser-video-wrap {
-      max-width: 40%;
+      max-width: 70%;
       margin-left: auto;
       margin-right: auto;
       width: 100%;
@@ -479,7 +484,7 @@
 <!-- ════════════════════════════════════════════════════════════
      NAVBAR
 ════════════════════════════════════════════════════════════ -->
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar navbar-over-video" role="navigation" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item" href="#">
