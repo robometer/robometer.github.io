@@ -419,16 +419,12 @@
   </div>
 </section>
 
-<!-- Teaser figure / video -->
+<!-- Teaser video -->
 <section class="section is-light-alt" style="padding: 2rem 1.5rem;">
-  <div class="container">
-    <img src="assets/images/robometer_teaser_small.jpeg" alt="Robometer overview" style="width:100%;">
-    <p class="fig-caption">
-      <strong>Figure 1 — Robometer overview.</strong>
-      Robometer is trained on RBM-1M, a 1M-trajectory dataset spanning 21 robot embodiments, containing both reward-labeled/expert trajectories and reward-unlabeled, failed trajectories.
-      The model is supervised with a dual objective: predicting frame-level task progress (reward) and learning trajectory-level preferences from pairwise comparisons. To help with downstream RL, it is also trained to predict per-frame task success.
-      This training recipe enables scalable reward learning, is validated on reward model evaluations from 6 out-of-distribution scenes collected at 3 institutions, and supports diverse downstream applications such as offline & online RL, imitation learning data filtering and retrieval, and automated failure detection.
-    </p>
+  <div class="container" style="max-width:80%; margin-left:auto; margin-right:auto;">
+    <video controls muted playsinline style="width:100%; border-radius:8px; display:block;" poster="assets/images/robometer_teaser_small.jpeg">
+      <source src="assets/teaser_video.mp4" type="video/mp4">
+    </video>
   </div>
 </section>
 
