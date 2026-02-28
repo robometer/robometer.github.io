@@ -422,7 +422,7 @@
 <!-- Teaser video -->
 <section class="section is-light-alt" style="padding: 2rem 1.5rem;">
   <div class="container" style="max-width:80%; margin-left:auto; margin-right:auto;">
-    <video controls muted playsinline autoplay loop style="width:100%; border-radius:8px; display:block;" poster="assets/images/robometer_teaser_small.jpeg">
+    <video id="teaser-video" controls muted playsinline autoplay loop preload="auto" style="width:100%; border-radius:8px; display:block;">
       <source src="assets/teaser_video.mp4" type="video/mp4">
     </video>
   </div>
@@ -1460,6 +1460,20 @@
       document.getElementById('subtab-' + this.dataset.subtab).classList.add('is-active');
     });
   });
+
+  /* Teaser video: start loading and try play when ready (helps autoplay) */
+  (function () {
+    var video = document.getElementById('teaser-video');
+    if (video) {
+      function tryPlay() {
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      video.addEventListener('canplay', tryPlay, { once: true });
+      video.addEventListener('loadeddata', tryPlay, { once: true });
+      if (video.readyState >= 2) tryPlay();
+    }
+  })();
 
   /* BibTeX copy */
   function copyBibtex() {
