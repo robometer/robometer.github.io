@@ -54,12 +54,115 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
-    .navbar-item { font-weight: 500; color: #333 !important; }
+    .navbar-item { font-weight: 500; color: #333 !important; transition: color 0.2s ease; }
     .navbar-item:hover { color: #3273dc !important; }
+    /* Dark navbar when over video (RISE-style) */
+    .navbar.navbar-over-video {
+      background: rgba(0,0,0,0.4);
+      box-shadow: none;
+    }
+    .navbar.navbar-over-video .navbar-item { color: rgba(255,255,255,0.9) !important; }
+    .navbar.navbar-over-video .navbar-item:hover { color: #fff !important; }
+    .navbar.navbar-over-video .navbar-burger span { background-color: #fff; }
 
     /* ── Hero ────────────────────────────────────────────────── */
     .hero-body { padding: 4rem 1.5rem 2rem; }
+
+    /* Hero + teaser overlay: video as background, header on top */
+    .hero-teaser-wrap {
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background: #000;
+    }
+    .hero-teaser-wrap .teaser-video-bg {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1800px;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .hero-teaser-wrap .teaser-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.5) 0%,
+        rgba(0,0,0,0.35) 25%,
+        rgba(0,0,0,0.25) 50%,
+        rgba(0,0,0,0.4) 75%,
+        rgba(0,0,0,0.6) 100%
+      );
+      z-index: 1;
+    }
+    .hero-teaser-wrap .hero-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 2.5rem 1.5rem 5rem;
+      width: 100%;
+    }
+    .hero-teaser-wrap .hero-teaser-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-teaser-wrap .paper-title { margin-bottom: 0.5rem; }
+    .hero-teaser-wrap .author-list { margin-top: 0.6rem; margin-bottom: 0.35rem; }
+    .hero-teaser-wrap .affiliation-list { margin-top: 0.5rem; margin-bottom: 0.2rem; }
+    .hero-teaser-wrap .link-buttons { margin-top: 1.25rem; }
+    .hero-teaser-wrap .title.paper-title { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+    .hero-teaser-wrap .author-list { color: rgba(255,255,255,0.95); text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+    .hero-teaser-wrap .author-list a { color: #b8d4ff; }
+    .hero-teaser-wrap .author-list a:hover { color: #fff; text-decoration: underline; }
+    .hero-teaser-wrap .affiliation-list { color: rgba(255,255,255,0.9); text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+    .hero-teaser-wrap .affiliation-list sup { color: rgba(255,255,255,0.95); }
+    .hero-teaser-wrap p[style*="font-style:italic"] { color: rgba(255,255,255,0.85) !important; }
+    .hero-teaser-wrap .link-buttons .button { box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+    /* Scroll indicator (RISE-style) */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      color: rgba(255,255,255,0.9);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .scroll-indicator:hover { color: #fff; }
+    .scroll-indicator-arrow {
+      animation: scroll-bounce 2s ease-in-out infinite;
+    }
+    @keyframes scroll-bounce {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(6px); opacity: 0.7; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-teaser-wrap { min-height: auto; padding: 3rem 0; }
+      .hero-teaser-wrap .hero-body { padding: 2rem 1rem 4.5rem; }
+      .scroll-indicator { bottom: 1rem; font-size: 0.7rem; }
+    }
 
     .title.paper-title {
       font-size: 2.2rem;
@@ -334,19 +437,28 @@
 </nav>
 
 <!-- ════════════════════════════════════════════════════════════
-     HERO – TITLE & AUTHORS
+     HERO – TITLE, AUTHORS & TEASER VIDEO (overlay)
 ════════════════════════════════════════════════════════════ -->
-<section class="hero is-white">
+<section class="hero hero-teaser-wrap" id="hero-video">
+  <video id="teaser-video" class="teaser-video-bg" muted playsinline autoplay loop preload="auto">
+    <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
+  </video>
+  <div class="teaser-overlay" aria-hidden="true"></div>
+  <button type="button" class="scroll-indicator" id="scroll-indicator-btn" aria-label="Scroll to content">
+    <span class="scroll-indicator-arrow"><i class="fas fa-chevron-down"></i></span>
+    <span>Scroll</span>
+  </button>
   <div class="hero-body">
     <div class="container has-text-centered">
+      <div class="hero-teaser-content">
 
       <p class="title paper-title">
-        <img src="assets/images/robometer_logo.png" alt="Robometer logo" style="height:2.2em;vertical-align:middle;margin-right:0.3em;" />
+        <img src="assets/images/robometer_logo.png" alt="Robometer logo" style="height:2.2em;vertical-align:middle;margin-right:0.3em;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));" />
         Robometer: Scaling General-Purpose Robotic Reward Models<br />via Trajectory Comparisons
       </p>
 
       <!-- Authors -->
-      <p class="author-list" style="margin-top:1.2rem;">
+      <p class="author-list">
         <a href="https://aliang8.github.io/">Anthony Liang</a><sup>*1</sup>&ensp;
         <a href="https://ygtkorkmaz.github.io/">Yigit Korkmaz</a><sup>*1</sup>&ensp;
         <a href="https://jiahui-3205.github.io/">Jiahui Zhang</a><sup>2</sup>&ensp;
@@ -385,10 +497,10 @@
         <sup>&dagger;</sup>Equal advising
       </p>
 
-      <!-- Conference / Venue -->
+      <!-- Conference / Venue 
       <p style="margin-top:0.6rem; font-style:italic; color:#666; font-size:0.95rem;">
         Conference / Journal Name, Year
-      </p>
+      </p> -->
 
 
       <!-- Link buttons -->
@@ -415,16 +527,8 @@
         </a>
       </div>
 
+      </div>
     </div>
-  </div>
-</section>
-
-<!-- Teaser video -->
-<section class="section is-light-alt" style="padding: 2rem 1.5rem;">
-  <div class="container" style="max-width:80%; margin-left:auto; margin-right:auto;">
-    <video id="teaser-video" controls muted playsinline autoplay loop preload="auto" poster="assets/images/teaser_poster.jpg" style="width:100%; border-radius:8px; display:block;">
-      <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
-    </video>
   </div>
 </section>
 
@@ -1472,6 +1576,36 @@
       video.addEventListener('canplay', tryPlay, { once: true });
       video.addEventListener('loadeddata', tryPlay, { once: true });
       if (video.readyState >= 2) tryPlay();
+    }
+  })();
+
+  /* Navbar: dark over video, white when scrolled past (RISE-style) */
+  (function () {
+    var navbar = document.querySelector('.navbar');
+    var hero = document.getElementById('hero-video');
+    if (!navbar || !hero) return;
+    function updateNavbar() {
+      var heroRect = hero.getBoundingClientRect();
+      var heroBottom = heroRect.bottom;
+      if (heroBottom > 0) {
+        navbar.classList.add('navbar-over-video');
+      } else {
+        navbar.classList.remove('navbar-over-video');
+      }
+    }
+    updateNavbar();
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    window.addEventListener('resize', updateNavbar);
+  })();
+
+  /* Scroll button: smooth scroll without changing URL (avoids #method in shared links) */
+  (function () {
+    var btn = document.getElementById('scroll-indicator-btn');
+    var target = document.getElementById('method');
+    if (btn && target) {
+      btn.addEventListener('click', function () {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }
   })();
 
