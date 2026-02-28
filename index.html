@@ -46,6 +46,24 @@
       color: #333;
     }
 
+    /* ── Page progress bar (USC red) ───────────────────────────── */
+    .page-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(0,0,0,0.06);
+      z-index: 101;
+      pointer-events: none;
+    }
+    .page-progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #990000; /* USC cardinal red */
+      transition: width 0.08s ease-out;
+    }
+
     /* ── Navbar ──────────────────────────────────────────────── */
     .navbar {
       background: rgba(255,255,255,0.95);
@@ -127,6 +145,7 @@
       z-index: 2;
       padding: 2.5rem 1.5rem 5rem;
       width: 100%;
+      transition: opacity 0.12s ease-out;
     }
     .hero-teaser-wrap .hero-teaser-content {
       max-width: 900px;
@@ -167,6 +186,7 @@
       font-family: inherit;
     }
     .scroll-indicator:hover { color: #fff; }
+    .scroll-indicator { transition: opacity 0.12s ease-out; }
     .scroll-indicator-arrow {
       animation: scroll-bounce 2s ease-in-out infinite;
     }
@@ -421,6 +441,11 @@
 </head>
 
 <body>
+
+<!-- Page scroll progress bar (USC red) -->
+<div class="page-progress-bar" role="progressbar" aria-label="Page scroll progress">
+  <div class="page-progress-bar-fill" id="page-progress-fill"></div>
+</div>
 
 <!-- ════════════════════════════════════════════════════════════
      NAVBAR
@@ -1596,15 +1621,14 @@
     }
   })();
 
-  /* Navbar: dark over video, white when scrolled past (RISE-style) */
+  /* Navbar: transparent over video, solid when scrolled past (RISE-style) */
   (function () {
     var navbar = document.querySelector('.navbar');
     var hero = document.getElementById('hero-video');
     if (!navbar || !hero) return;
     function updateNavbar() {
       var heroRect = hero.getBoundingClientRect();
-      var heroBottom = heroRect.bottom;
-      if (heroBottom > 0) {
+      if (heroRect.bottom > 0) {
         navbar.classList.add('navbar-over-video');
       } else {
         navbar.classList.remove('navbar-over-video');
@@ -1613,6 +1637,23 @@
     updateNavbar();
     window.addEventListener('scroll', updateNavbar, { passive: true });
     window.addEventListener('resize', updateNavbar);
+  })();
+
+  /* Hero text fades out as user scrolls down (RISE-style) */
+  (function () {
+    var hero = document.getElementById('hero-video');
+    var heroBody = hero ? hero.querySelector('.hero-body') : null;
+    var scrollBtn = document.getElementById('scroll-indicator-btn');
+    if (!hero || !heroBody) return;
+    function updateHeroFade() {
+      var rect = hero.getBoundingClientRect();
+      var opacity = Math.max(0, Math.min(1, rect.bottom / window.innerHeight));
+      heroBody.style.opacity = opacity;
+      if (scrollBtn) scrollBtn.style.opacity = opacity;
+    }
+    updateHeroFade();
+    window.addEventListener('scroll', updateHeroFade, { passive: true });
+    window.addEventListener('resize', updateHeroFade);
   })();
 
   /* Scroll button: smooth scroll without changing URL (avoids #method in shared links) */
@@ -1624,6 +1665,21 @@
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
+  })();
+
+  /* Page progress bar: fill by scroll (USC red) */
+  (function () {
+    var fill = document.getElementById('page-progress-fill');
+    if (!fill) return;
+    function updateProgress() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = scrollHeight > 0 ? Math.min(100, (scrollTop / scrollHeight) * 100) : 0;
+      fill.style.width = pct + '%';
+    }
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
   })();
 
   /* BibTeX copy */
