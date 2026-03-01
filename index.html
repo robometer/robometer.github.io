@@ -660,7 +660,7 @@
     <h3 class="title is-4" style="color:#1a1a2e;">Contributions</h3>
     <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
       <strong>Training Rewards on Different Expertise Data</strong><br />
-       Robometer enables scalable training of rewards on both (1) reward-labeled or expert demonstrations and (2) reward-unlabeled, suboptimal trajectories.
+       Robometer enables scalable training of dense, video-language-conditioned rewards on both (1) reward-labeled / expert demonstrations and (2) reward-unlabeled, suboptimal trajectories.
        This enables well-calibrated, dense rewards usable zero-shot for policy learning.
     </div>
     <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
@@ -742,8 +742,8 @@
         <div class="column">
           <div class="highlight-box is-warning-light" style="height:100%; margin-bottom:0;">
             <strong>Different Tasks</strong><br />
-            We pair trajectories of different tasks together, training the model to prefer the video corresponding to the input language instruction.
-            We can train per-frame progress/success on 
+            We pair trajectories of different tasks together, training the model to prefer the video corresponding to the correct input language instruction.
+            We can train per-frame progress/success on both types of trajectories.
           </div>
         </div>
         <div class="column">
