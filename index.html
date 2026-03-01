@@ -51,6 +51,11 @@
       overscroll-behavior-y: none;
     }
 
+    /* Override Bulma .container max-width (Bulma default is 1152px at full width) */
+    .container {
+      width: 80%;
+    }
+
     /* ── Page progress bar (USC red) ───────────────────────────── */
     .page-progress-bar {
       position: fixed;
@@ -677,12 +682,12 @@
       <div class="column is-5">
         <h3 class="title is-4" style="color:#1a1a2e;">Dual-Objective Training</h3>
         <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
-          <strong>Frame-Level Progress Loss</strong><br />
-          Anchors the magnitude of predicted rewards by regressing per-frame progress values on expert demonstration data,
+          <strong>Frame-Level Progress and Success Prediction</strong><br />
+          Anchors the magnitude of predicted rewards by regressing per-frame progress and success values on expert demonstration data,
           providing dense supervision at the intra-trajectory level.
         </div>
         <div class="highlight-box is-success-light">
-          <strong>Trajectory-Comparison Preference Loss</strong><br />
+          <strong>Trajectory-Comparison Preference Prediction</strong><br />
           Imposes global ordering constraints across pairs of trajectories of the same task, enabling robust learning
           from suboptimal and failed data via a preference comparison objective.
         </div>
@@ -691,7 +696,7 @@
 
     <div style="margin-bottom:2rem;">
       <div style="display: flex; justify-content: center;">
-        <img src="assets/images/robometer_training_objectives.jpeg" alt="Robometer Training Objectives and Types" style="width:80%; display:block; border-radius:8px;">
+        <img src="assets/images/robometer_training_objectives.jpeg" alt="Robometer Training Objectives and Types" style="width:100%; display:block; border-radius:8px;">
       </div>
       <h3 class="title is-4" style="color:#1a1a2e; margin-top:1.7rem;">Model Training Inputs and Objectives</h3>
       <div class="columns">
