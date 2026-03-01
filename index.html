@@ -226,7 +226,7 @@
 
     /* At a Glance teaser: 60% on desktop, full width when shrunk or on phone */
     #at-a-glance .teaser-video-wrap {
-      max-width: 70%;
+      max-width: 60%;
       margin-left: auto;
       margin-right: auto;
       width: 100%;
@@ -505,8 +505,8 @@
         <a class="navbar-item" href="#dataset">Dataset</a>
         <a class="navbar-item" href="#ablations">Offline Eval</a>
         <a class="navbar-item" href="#finetuning">LoRA Finetuning</a>
-        <a class="navbar-item" href="#experiments">Experiments</a>
         <a class="navbar-item" href="#demo">Demo</a>
+        <a class="navbar-item" href="#experiments">Policy Learning Experiments</a>
         <a class="navbar-item" href="#bibtex">BibTeX</a>
       </div>
     </div>
@@ -618,7 +618,23 @@
     <video controls muted playsinline autoplay loop preload="auto" style="width:100%; border-radius:8px; display:block;">
       <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
     </video>
+    <br>
+    <h3 class="title is-4" style="color:#1a1a2e;">Contributions</h3>
+    <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
+      <strong>Training Rewards on Different Expertise Data</strong><br />
+       Robometer enables scalable training of rewards on both (1) reward-labeled or expert demonstrations and (2) reward-unlabeled, suboptimal trajectories.
+       This enables well-calibrated, dense rewards usable zero-shot for policy learning.
+    </div>
+    <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
+      <strong>RBM-1M Dataset</strong><br />
+      We release RBM-1M, a large-scale reward-learning dataset comprising over one million trajectories spanning diverse robot embodiments and tasks, including substantial suboptimal and failure data.
+    </div>
+    <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
+      <strong>Downstream Applications</strong><br />
+      Robometer significantly improves robot learning performance across a diverse set of downstream applications, including model-free online RL, model-based online RL, offline RL, failure detection, and data retrieval for IL.
+    </div>
   </div>
+
 </section>
 
 <!-- ════════════════════════════════════════════════════════════
@@ -1183,7 +1199,7 @@
 ════════════════════════════════════════════════════════════ -->
 <section class="section is-white-alt" id="experiments">
   <div class="container">
-    <h2 class="section-heading">Experiment Results</h2>
+    <h2 class="section-heading">Policy Learning Experiments</h2>
     <div class="section-divider"></div>
 
     <p style="text-align:center;color:#555;margin-bottom:2.5rem;max-width:700px;margin-left:auto;margin-right:auto;">
