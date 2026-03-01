@@ -383,6 +383,13 @@
       text-align: left;
       padding-left: 1rem;
     }
+    .results-table-caption {
+      text-align: center;
+      color: #555;
+      margin: 1rem auto 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
 
     /* ── Tabs ────────────────────────────────────────────────── */
     .exp-tabs .tabs ul { border-bottom: none; }
@@ -651,16 +658,16 @@
 <!-- At a Glance – teaser video (below hero, after scroll) -->
 <section class="section is-light-alt" id="at-a-glance" style="padding: 2rem 1.5rem;">
   <div class="teaser-video-wrap">
-    <h2 class="section-heading">At a Glance</h2>
+    <h2 class="section-heading">At a Glance: Robometer Provides Dense, General-Purpose, Video-Language-Conditioned Rewards</h2>
     <div class="section-divider"></div>
     <video controls muted playsinline autoplay loop preload="auto" style="width:100%; border-radius:8px; display:block;">
       <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
     </video>
     <br>
-    <h3 class="title is-4" style="color:#1a1a2e;">Contributions</h3>
+    <h3 class="title is-4" style="color:#1a1a2e;">Specific Contributions</h3>
     <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
       <strong>Training Rewards on Different Expertise Data</strong><br />
-       Robometer enables scalable training of dense, video-language-conditioned rewards on both (1) reward-labeled / expert demonstrations and (2) reward-unlabeled, suboptimal trajectories.
+       Robometer enables scalable training of rewards on both (1) reward-labeled / expert demonstrations and (2) reward-unlabeled, suboptimal trajectories.
        This enables well-calibrated, dense rewards usable zero-shot for policy learning.
     </div>
     <div class="highlight-box is-info-light" style="margin-bottom:1rem;">
@@ -863,7 +870,65 @@
         </tbody>
       </table>
     </div>
-    <p class="is-size-7" style="text-align:center;color:#666;margin-bottom:1rem;max-width:720px;margin-left:auto;margin-right:auto;">(a) Reward alignment (VOC Pearson $r$) and (b) trajectory ranking (Kendall $\tau_a$) on RBM-EVAL. Baselines by training data: GVL (w/ GPT-5-mini, unknown data), VLAC (300k trajectories), RoboDopamine (100k). We compare Robometer to RoboReward-4B/8B on their data, and ReWiND and Robometer on the full RBM-1M dataset.</p>
+    <p class="results-table-caption" style="max-width:1400px;margin-left:auto;margin-right:auto;">
+      (a) <b>Reward alignment</b> (VOC Pearson $r$) and (b) <b>trajectory ranking</b> (Kendall $\tau_a$) on RBM-EVAL. Baselines by training data: GVL (w/ GPT-5-mini, unknown data), VLAC (300k trajectories), RoboDopamine (100k). We compare Robometer to RoboReward-4B/8B on their data, and ReWiND and Robometer on the full RBM-1M dataset.
+    </p>
+
+    <!-- RoboRewardBench MAE table -->
+    <div class="results-table" style="margin:1.5rem auto 0.75rem; overflow-x:auto; max-width:720px;">
+      <table class="table is-fullwidth is-bordered is-hoverable" style="min-width:480px;">
+        <thead>
+          <tr>
+            <th>Model Type</th>
+            <th>Model</th>
+            <th>RoboRewardBench MAE &darr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="4" style="vertical-align:middle; font-weight:600;">Qwen3-4B Models</td>
+            <td>Robometer (ours)</td>
+            <td class="best"><strong>0.72</strong></td>
+          </tr>
+          <tr>
+            <td>Robometer (RoboReward data only)</td>
+            <td>0.75</td>
+          </tr>
+          <tr>
+            <td>RoboReward-4B</td>
+            <td>0.85</td>
+          </tr>
+          <tr>
+            <td>Qwen3-VL-4B-Instr.</td>
+            <td>1.03</td>
+          </tr>
+
+          <!--<tr class="separator-row">
+            <td colspan="3"><strong>Closed / Larger Models</strong></td>
+          </tr>
+          <tr>
+            <td rowspan="4" style="vertical-align:middle; font-weight:600;">Closed / Larger</td>
+            <td>RoboReward-8B</td>
+            <td class="best"><strong>0.67</strong></td>
+          </tr>
+          <tr>
+            <td>GPT-5-mini</td>
+            <td>0.69</td>
+          </tr>
+          <tr>
+            <td>Qwen3-VL-8B-Instr.</td>
+            <td>0.89</td>
+          </tr>
+          <tr>
+            <td>Gemini-2.5-pro</td>
+            <td>0.90</td>
+          </tr>-->
+        </tbody>
+      </table>
+    </div>
+    <p class="results-table-caption" style="max-width:720px;margin-left:auto;margin-right:auto;">
+      Evaluation on the <b><a href="https://arxiv.org/abs/2601.00675">RoboRewardBench</a> benchmark</b>;(mean absolute error, lower is better).
+    </p>
 
     <p style="text-align:center;margin-bottom:1rem;">
       <button type="button" class="button is-small is-light" id="toggle-full-eval" aria-expanded="false">Show full per-dataset results</button>
@@ -1011,7 +1076,7 @@
             </tbody>
           </table>
         </div>
-        <p class="is-size-7" style="color:#666;margin-top:0.5rem;text-align:center;">Different quality trajectory pairwise preference accuracy.</p>
+        <p class="is-size-6" style="color:#666;margin-top:0.5rem;text-align:center;">Different quality trajectory pairwise preference accuracy.</p>
       </div>
       <div class="column is-6">
         <p class="has-text-weight-semibold" style="margin-bottom:0.75rem;color:#1a1a2e;text-align:center;">Different task</p>
@@ -1035,7 +1100,7 @@
             </tbody>
           </table>
         </div>
-        <p class="is-size-7" style="color:#666;margin-top:0.5rem;text-align:center;">Different task trajectory pairwise preference accuracy.</p>
+        <p class="is-size-6" style="color:#666;margin-top:0.5rem;text-align:center;">Different task trajectory pairwise preference accuracy.</p>
       </div>
     </div>
 
