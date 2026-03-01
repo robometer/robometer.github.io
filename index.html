@@ -493,7 +493,10 @@
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item" href="#">
-        <img src="assets/images/robometer_logo_white.png" alt="Robometer logo" style="height:1.8em;vertical-align:middle;margin-right:0.3em;" />
+        <img id="navbar-logo"
+          src="assets/images/robometer_logo_white.png"
+          alt="Robometer logo"
+          style="height:1.8em;vertical-align:middle;margin-right:0.3em;" />
         <strong>Robometer</strong>
       </a>
       <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
@@ -517,6 +520,36 @@
     </div>
   </div>
 </nav>
+<script>
+  // Switch navbar logo based on overlay state
+  function updateNavbarLogo() {
+    var navbar = document.querySelector('.navbar');
+    var navbarLogo = document.getElementById('navbar-logo');
+    if (!navbar || !navbarLogo) return;
+    if (navbar.classList.contains('navbar-over-video')) {
+      navbarLogo.src = "assets/images/robometer_logo_white.png";
+    } else {
+      navbarLogo.src = "assets/images/robometer_logo.png";
+    }
+  }
+  // Run at startup and also on any navbar class changes
+  document.addEventListener('DOMContentLoaded', function () {
+    updateNavbarLogo();
+    // Observe class changes on navbar to handle overlay switching
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      // Some navbars are toggled by JS, so listen for attribute modifications
+      // Fallback for environments without MutationObserver
+      if (window.MutationObserver) {
+        const observer = new MutationObserver(updateNavbarLogo);
+        observer.observe(navbar, { attributes: true, attributeFilter: ['class'] });
+      } else {
+        // Fallback: poll periodically (rarely needed)
+        setInterval(updateNavbarLogo, 500);
+      }
+    }
+  });
+</script>
 
 <!-- ════════════════════════════════════════════════════════════
      HERO – TITLE, AUTHORS & TEASER VIDEO (overlay)
