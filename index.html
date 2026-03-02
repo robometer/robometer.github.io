@@ -1627,27 +1627,31 @@
             </tbody>
           </table>
         </div>
-        <div class="columns is-multiline">
-          <div class="column is-6">
-            <div class="result-card">
-              <div class="placeholder-video" style="min-height:220px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Failure Detection — True Positive</strong>
-                <span style="font-size:0.8rem;">failure_det_tp.mp4</span>
-              </div>
-              <div class="card-caption">Robometer correctly flags a failed grasp attempt.</div>
+        <div class="columns is-centered" style="display: flex; flex-wrap: nowrap; gap: 0.15rem;">
+          <div class="column" style="flex: 1;">
+            <div class="result-card" style="height:100%;">
+              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                <source src="assets/failure_detection/failure_detection_1.mp4" type="video/mp4">
+              </video>
+              <div class="card-caption">Robometer detects a failure when the pebbles are spilled during pouring.</div>
             </div>
           </div>
-          <div class="column is-6">
-            <div class="result-card">
-              <div class="placeholder-video" style="min-height:220px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Failure Detection — True Negative</strong>
-                <span style="font-size:0.8rem;">failure_det_tn.mp4</span>
-              </div>
-              <div class="card-caption">Robometer correctly identifies a successful trajectory.</div>
+          <div class="column" style="flex: 1;">
+            <div class="result-card" style="height:100%;">
+              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                <source src="assets/failure_detection/failure_detection_2.mp4" type="video/mp4">
+              </video>
+              <div class="card-caption">Robometer detects a failure when the spoon is dropped.</div>
             </div>
           </div>
+          <!-- <div class="column" style="flex: 1;">
+            <div class="result-card" style="height:100%;">
+              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                <source src="assets/failure_detection/failure_detection_3.mp4" type="video/mp4">
+              </video>
+              <div class="card-caption"><b>$\pi_{0.5}$ LoRA-finetuned on Robometer-retrieved data.</b></div>
+            </div>
+          </div> -->
         </div>
       </div>
 
@@ -1690,7 +1694,7 @@
               </div>
               <div class="card-caption">
                 <strong>Instruction:</strong> Open the red drawer<br>
-                Example retrieved subtrajectories by Robometer.
+                Example retrieved subtrajectories by Robometer. Note that, this task requires 2-arm coordination to open the drawer, with one arm pushing down on the drawer and the other arm pulling down on the drawer handle.
               </div>
             </div>
           </div>
@@ -1700,7 +1704,6 @@
                 <source src="assets/retrieval/open_drawer.mp4" type="video/mp4">
               </video>
               <div class="card-caption"><b>$\pi_{0.5}$ LoRA-finetuned on Robometer-retrieved data.</b>
-                This task requires 2-arm coordination to open the drawer, with one arm pushing down on the drawer and the other arm pulling down on the drawer handle.
               </div>
             </div>
           </div>
