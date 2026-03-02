@@ -519,8 +519,8 @@
         <a class="navbar-item" href="#method">Method</a>
         <a class="navbar-item" href="#dataset">Dataset</a>
         <a class="navbar-item" href="#ablations">Offline Eval</a>
-        <a class="navbar-item" href="#finetuning">LoRA Finetuning</a>
         <a class="navbar-item" href="#demo">Demo</a>
+        <a class="navbar-item" href="#finetuning">LoRA Finetuning</a>
         <a class="navbar-item" href="#experiments">Policy Learning Experiments</a>
         <a class="navbar-item" href="#bibtex">BibTeX</a>
       </div>
@@ -803,19 +803,42 @@
     </div>
 
     <!-- Dataset figure -->
-    <div class="columns is-vcentered">
-      <div class="column is-6">
-        <div class="result-card" style="margin-bottom:2rem;">
-          <!-- <span class="icon-wrap"><i class="fas fa-chart-pie"></i></span> -->
-          <img src="assets/images/rbm_1m_pie_chart.jpeg" alt="RBM-1M statistics" style="width:100%;">
-          <div class="card-caption"><strong>Distribution of different trajectory types in RBM-1M.</strong></div>
+    <div class="columns is-vcentered" style="align-items: stretch;">
+      <div class="column is-4" style="display: flex; flex-direction: column; height: 100%;">
+        <div class="result-card" style="margin-bottom:2rem; height:100%; display: flex; flex-direction: column; justify-content: center;">
+          <img src="assets/images/rbm_1m_pie_chart.jpeg" alt="RBM-1M statistics" style="width:80%; display:block; margin:0 auto;">
+          <div class="card-caption" style="font-size:0.97rem;"><strong>Distribution of different trajectory types in RBM-1M.</strong></div>
         </div>
       </div>
-      <div class="column is-6">
-        <div class="placeholder-img" style="min-height:260px;">
-          <span class="icon-wrap"><i class="fas fa-stream"></i></span>
-          <strong>Example Trajectories</strong>
-          <span>Replace with dataset_examples.png — montage of expert, suboptimal, and failed trajectory frames.</span>
+      <div class="column is-8" style="display: flex; flex-direction: column; height: 100%;">
+        <div class="result-card" style="margin-bottom:2rem; height:100%; display:flex; flex-direction:column; justify-content:center;">
+          <div style="margin-top:2rem; display: flex; gap: 0; justify-content: center; align-items: flex-end; flex-wrap: nowrap;">
+            <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
+              <img src="assets/example_trajs/example_1.gif" alt="Example Trajectory 1" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
+              <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#444;">Expert</div> -->
+            </div>
+            <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
+              <img src="assets/example_trajs/example_2.gif" alt="Example Trajectory 2" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
+              <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#444;">Suboptimal</div> -->
+            </div>
+            <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
+              <img src="assets/example_trajs/example_3.gif" alt="Example Trajectory 3" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
+              <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#444;">Suboptimal</div> -->
+            </div>
+            <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
+              <img src="assets/example_trajs/example_4.gif" alt="Example Trajectory 4" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
+              <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#d24343;">Failed</div> -->
+            </div>
+            <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
+              <img src="assets/example_trajs/example_5.gif" alt="Example Trajectory 5" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
+              <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#444;">Expert</div> -->
+            </div>
+            <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
+              <img src="assets/example_trajs/example_6.gif" alt="Example Trajectory 6" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
+              <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#d24343;">Failed</div> -->
+            </div>
+          </div>
+          <div class="card-caption" style="font-size:0.97rem;"><strong>Example trajectories from RBM-1M exhibiting diverse quality.</strong></div>
         </div>
       </div>
     </div>
