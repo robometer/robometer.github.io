@@ -837,13 +837,13 @@
     <div class="columns is-vcentered" style="align-items: stretch;">
       <div class="column is-4" style="display: flex; flex-direction: column; height: 100%;">
         <div class="result-card" style="margin-bottom:2rem; height:100%; display: flex; flex-direction: column; justify-content: center;">
-          <img src="assets/images/rbm_1m_pie_chart.jpeg" alt="RBM-1M statistics" style="width:80%; display:block; margin:0 auto;">
+          <img src="assets/images/rbm_1m_pie_chart.jpeg" alt="RBM-1M statistics" style="width:100%; display:block; margin:0 auto;">
           <div class="card-caption" style="font-size:0.97rem;"><strong>Distribution of different trajectory types in RBM-1M.</strong></div>
         </div>
       </div>
       <div class="column is-8" style="display: flex; flex-direction: column; height: 100%;">
         <div class="result-card" style="margin-bottom:2rem; height:100%; display:flex; flex-direction:column; justify-content:center;">
-          <div style="margin-top:2rem; display: flex; gap: 0; justify-content: center; align-items: flex-end; flex-wrap: nowrap;">
+          <div style="margin-top:2.5rem; display: flex; gap: 0; justify-content: center; align-items: flex-end; flex-wrap: nowrap;">
             <div style="flex:1 1 0; max-width:16.5%; text-align:center; display: flex; flex-direction: column; height:100%;">
               <img src="assets/example_trajs/example_1.gif" alt="Example Trajectory 1" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:7px;box-shadow:0 2px 8px #0001;flex-shrink:0;">
               <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#444;">Expert</div> -->
@@ -869,15 +869,18 @@
               <!-- <div style="font-size:0.92rem;margin-top:0.5rem;color:#d24343;">Failed</div> -->
             </div>
           </div>
-          <div class="card-caption" style="font-size:0.97rem;"><strong>Example trajectories from RBM-1M.</strong></div>
+          <div class="card-caption" style="font-size:0.97rem;"><strong>Example trajectories from RBM-1M.</strong>
+            Dataset composition across robot embodiments, tasks, and trajectory quality levels. Suboptimal and failure data
+            constitute a substantial fraction, enabling the preference-based learning component of Robometer.      
+          </div>
         </div>
       </div>
     </div>
-    <p class="fig-caption">
+    <!-- <p class="fig-caption">
       <strong>Figure 3 — RBM-1M.</strong>
       Dataset composition across robot embodiments, tasks, and trajectory quality levels. Suboptimal and failure data
       constitute a substantial fraction, enabling the preference-based learning component of Robometer.
-    </p>
+    </p> -->
   </div>
 </section>
 
@@ -1514,9 +1517,9 @@
       <div id="tab-offline-rl" class="tab-content" style="display:none;">
         <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
           <strong>Setting.</strong>
-          Robometer rewards are used to re-label offline datasets (e.g., D4RL / robot manipulation datasets)
-          and train policies with IQL or TD3+BC.
-        </div>
+          Robometer rewards serve as dense feedback for offline RL with IQL on mixed-expertise data. By providing intermediate 
+          supervision, they reduce long-horizon credit assignment and enable effective trajectory stitching at lower discount 
+          factors $\gamma$; we sweep $\gamma$ for each reward model and report the best-performing configuration. </div>
         <div class="results-table" style="margin-bottom:1.5rem;">
           <table class="table is-fullwidth is-bordered is-hoverable">
             <thead>
@@ -1543,25 +1546,29 @@
             </tbody>
           </table>
         </div>
+        <p style="text-align:center; color:#555; margin-bottom:1rem; font-size:0.95rem;">We observe that Robometer performs best at a 
+          lower discount factor $\gamma=0.9$. Compared to sparse rewards and prior reward models, Robometer achieves up to a 2.4× higher 
+          success rate by providing temporally aligned feedback that enables more effective trajectory stitching.
+        </p>
         <div class="columns">
           <div class="column is-6">
             <div class="result-card">
-              <div class="placeholder-img" style="min-height:240px;">
-                <span class="icon-wrap"><i class="fas fa-chart-line"></i></span>
-                <strong>Offline RL Performance Chart</strong>
-                <span>Replace with offline_rl_results.png</span>
+              <div style="min-height:240px;">
+                <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                  <source src="assets/offline_rl/setting_1.mp4" type="video/mp4">
+                </video>
               </div>
-              <div class="card-caption">Offline RL results across datasets. Robometer reward re-labeling consistently improves policy performance.</div>
-            </div>
+              <div class="card-caption">Policy trained on Robometer rewards on Setting 1.</div>
+              </div>
           </div>
           <div class="column is-6">
             <div class="result-card">
-              <div class="placeholder-video" style="min-height:240px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Qualitative Rollouts</strong>
-                <span style="font-size:0.8rem;">offline_rl_rollouts.mp4</span>
+              <div style="min-height:240px;">
+                <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                  <source src="assets/offline_rl/setting_2.mp4" type="video/mp4">
+                </video>
               </div>
-              <div class="card-caption">Policies trained on Robometer re-labeled data perform complex multi-stage tasks.</div>
+              <div class="card-caption">Policy trained on Robometer rewards on Setting 2.</div>
             </div>
           </div>
         </div>
@@ -1623,8 +1630,9 @@
       <div id="tab-failure-detection" class="tab-content" style="display:none;">
         <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
           <strong>Setting.</strong>
-          The Robometer reward signal is thresholded to detect trajectory failures in real-robot experiments.
-          Evaluated with precision, recall and F1 against human-labeled outcomes.
+          Robometer rewards are used for zero-shot failure detection on various real-world manipulation trajectories from an unseen robot platform, 
+          spanning seven tasks and including both irreversible and insufficient-progress failures. Failures are detected via temporal inconsistencies 
+          in predicted per-frame rewards. Evaluated with precision, recall and F1 against human-labeled outcomes.
         </div>
         <p style="margin-bottom:1rem;font-size:0.95rem;color:#555;">Per-task TPR, TNR, and F1 for failure detection. Best F1 per task in <span style="color:#0a6b2e;font-weight:700;">green</span>.</p>
         <div class="results-table" style="margin-bottom:1.5rem; overflow-x:auto;">
@@ -1657,7 +1665,7 @@
         <div class="columns is-centered" style="display: flex; flex-wrap: nowrap; gap: 0.15rem;">
           <div class="column" style="flex: 1;">
             <div class="result-card" style="height:100%;">
-              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+              <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
                 <source src="assets/failure_detection/failure_detection_1.mp4" type="video/mp4">
               </video>
               <div class="card-caption">Robometer detects a failure when the pebbles are spilled during pouring.</div>
@@ -1665,7 +1673,7 @@
           </div>
           <div class="column" style="flex: 1;">
             <div class="result-card" style="height:100%;">
-              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+              <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
                 <source src="assets/failure_detection/failure_detection_2.mp4" type="video/mp4">
               </video>
               <div class="card-caption">Robometer detects a failure when the spoon is dropped.</div>
@@ -1686,9 +1694,9 @@
       <div id="tab-data-retrieval" class="tab-content" style="display:none;">
         <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
           <strong>Setting.</strong>
-          Given a play dataset, Robometer retrieves the most relevant subtrajectories for a task instruction using (i) the preference objective via pairwise trajectory 
-          comparisons, or (ii) the progress objective by computing per-timestep progress values and each trajectory’s value–order correlation.
-        </div>
+          Given a multi-task, unlabeled play dataset, Robometer retrieves the most relevant subtrajectories for a task instruction using either 
+          (i) preference-based pairwise trajectory comparisons or (ii) progress-based ranking via per-timestep reward predictions and 
+          value–order correlation.</div>
         <div class="result-card" style="margin-bottom:1.5rem;max-width:75%;margin-left:auto;margin-right:auto;">
           <img src="assets/retrieval/retrieval_setup.png" alt="Data retrieval and imitation learning results" style="width:100%; display:block; border-radius:8px 8px 0 0;">
         </div>
@@ -1727,7 +1735,7 @@
           </div>
           <div class="column is-4">
             <div class="result-card">
-              <video controls muted playsinline preload="metadata" style="border-radius:8px 8px 0 0;">
+              <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0;">
                 <source src="assets/retrieval/open_drawer.mp4" type="video/mp4">
               </video>
               <div class="card-caption"><b>$\pi_{0.5}$ LoRA-finetuned on Robometer-retrieved data.</b>
