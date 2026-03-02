@@ -669,7 +669,7 @@
 </section>
 
 <!-- Overview – teaser video (below hero, after scroll) -->
-<section class="section is-light-alt" id="at-a-glance" style="padding: 2rem 1.5rem;">
+<section class="section is-light-alt" id="at-a-glance" style="padding: 2rem 1.5rem; max-width: 70%; margin: 0 auto;">
   <div class="teaser-video-wrap">
     <h2 class="section-heading">Robometer: Dense, General-Purpose, Video-Language Reward Model</h2>
     <div class="section-divider"></div>
@@ -874,6 +874,22 @@
     <div class="result-card" style="margin-bottom:2rem;">
       <img src="assets/images/robometer_confusionmatrix.png" alt="Failure detection confusion matrix" style="width:100%; display:block; border-radius:8px 8px 0 0;">
       <div class="card-caption"><strong>Video-language reward confusion matrix.</strong> For each task (unseen data), we score all video–instruction pairs. Robometer yields the most diagonal matrix, indicating strong alignment between demos and instructions. Values are column-normalized diagonal means (fraction of reward on aligned pairs).</div>
+    </div>
+    
+    <!-- Qualitative plots -->
+    <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Qualitative Reward Curves</h3>
+    <p style="text-align:center;color:#555;margin-bottom:1.5rem;font-size:0.95rem;">
+      Reward curves predicted by Robometer and ablated variants on example trajectories.
+    </p>
+    <div class="columns">
+      <div class="column is-12">
+        <div class="result-card">
+          <img src="assets/images/qualitative_plots.png" alt="Qualitative reward plots" style="width:100%; display:block; border-radius:8px 8px 0 0;">
+          <div class="card-caption">Qualitative reward curves across expert, suboptimal, and failed trajectories.
+            Robometer predictions reflect subtle failures and best align with true progress.
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Summary table (TABLE I): VOC r and Kendall τ -->
@@ -1140,19 +1156,6 @@
       </div>
     </div>
 
-    <!-- Qualitative plots -->
-    <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Qualitative Reward Curves</h3>
-    <p style="text-align:center;color:#555;margin-bottom:1.5rem;font-size:0.95rem;">
-      Reward curves predicted by Robometer and ablated variants on example trajectories.
-    </p>
-    <div class="columns">
-      <div class="column is-12">
-        <div class="result-card">
-          <img src="assets/images/qualitative_plots.png" alt="Qualitative reward plots" style="width:100%; display:block; border-radius:8px 8px 0 0;">
-          <div class="card-caption">Qualitative reward curves across expert, suboptimal, and failed trajectories.</div>
-        </div>
-      </div>
-    </div>
 
     <!-- Reward curves by dataset/task (ID) -->
     <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Reward curves by trajectory (RBM-EVAL-ID)</h3>
