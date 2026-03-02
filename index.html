@@ -1374,19 +1374,19 @@
             <div class="column is-6">
               <div class="result-card">
                 <video controls muted playsinline autoplay loop preload="metadata">
-                  <source src="assets/online_rl/robometer_auto_online_rl_small.mp4" type="video/mp4">
+                  <source src="assets/online_rl/roboreward_auto_online_rl_small.mp4" type="video/mp4">
                 </video>
-                <div class="card-caption">Robometer 100x speed real world training clip.</div>
+                <div class="card-caption"><b>RoboReward</b> 100x speed real world training clip. RoboReward consistently
+                  falsely predicts success/full reward before the robot finishes the task, leading to poor evaluation performance.
+                </div>
               </div>
             </div>
             <div class="column is-6">
               <div class="result-card">
                 <video controls muted playsinline autoplay loop preload="metadata">
-                  <source src="assets/online_rl/roboreward_auto_online_rl_small.mp4" type="video/mp4">
+                  <source src="assets/online_rl/robometer_auto_online_rl_small.mp4" type="video/mp4">
                 </video>
-                <div class="card-caption">RoboReward 100x speed real world training clip. RoboReward consistently
-                  falsely predicts success/full reward before the robot finishes the task, leading to poor evaluation performance.
-                </div>
+                <div class="card-caption"><b>Robometer</b> 100x speed real world training clip.</div>
               </div>
             </div>
           </div>
@@ -1429,21 +1429,21 @@
             <div class="column is-6">
               <div class="result-card">
                 <video controls muted playsinline autoplay loop preload="metadata">
-                  <source src="assets/online_rl/robometer_multistage_online_rl_small.mp4" type="video/mp4">
+                  <source src="assets/online_rl/roboreward_multistage_online_rl_small.mp4" type="video/mp4">
                 </video>
-                <div class="card-caption">Robometer Multi-stage RL at 100x speed. Robometer is 
-                  robust to when the robot drops the corn next to but not into the pot, leading to few false stage advancements.
+                <div class="card-caption"><b>RoboReward</b> Multi-stage RL at 100x speed. RoboReward is 
+                  often falsely predicts success for the first stage when the robot drops the corn next to but not into the pot, leading to poor downstream evaluation performance
+                  where the robot rarely puts the corn into the pot.
                 </div>
               </div>
             </div>
             <div class="column is-6">
               <div class="result-card">
                 <video controls muted playsinline autoplay loop preload="metadata">
-                  <source src="assets/online_rl/roboreward_multistage_online_rl_small.mp4" type="video/mp4">
+                  <source src="assets/online_rl/robometer_multistage_online_rl_small.mp4" type="video/mp4">
                 </video>
-                <div class="card-caption">Roboreward Multi-stage RL at 100x speed. Roboreward is 
-                  often falsely predicts success for the first stage when the robot drops the corn next to but not into the pot, leading to poor downstream evaluation performance
-                  where the robot rarely puts the corn into the pot.
+                <div class="card-caption"><b>Robometer</b> Multi-stage RL at 100x speed. Robometer is 
+                  robust to when the robot drops the corn next to but not into the pot, leading to few false stage advancements.
                 </div>
               </div>
             </div>
@@ -1537,33 +1537,25 @@
       <div id="tab-model-based-rl" class="tab-content" style="display:none;">
         <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
           <strong>Setting.</strong>
-          Robometer is used as the reward oracle inside a model-based planning loop
-          (e.g., MBPO, DreamerV3, TD-MPC2), enabling reward-conditioned planning without environment reward access.
+          Robometer is used as a reward model to guide model-based planning with <a href="https://dreamzero0.github.io/">DreamZero</a>
+          via using Robometer rewards on imagined trajectories to choose the best next action chunk.
         </div>
         <div class="results-table" style="margin-bottom:1.5rem;">
           <table class="table is-fullwidth is-bordered is-hoverable">
             <thead>
               <tr>
                 <th>Method</th>
-                <th>Task A</th>
-                <th>Task B</th>
-                <th>Task C</th>
-                <th>Average ↑</th>
+                <th>Task: "Put the ice cream cone in the pink plate"</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Ground-truth reward</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
-              </tr>
-              <tr>
-                <td>Baseline reward model</td>
-                <td>XX.X</td><td>XX.X</td><td>XX.X</td><td>XX.X</td>
+                <td>DreamZero Base</td>
+                <td>0.20</td>
               </tr>
               <tr class="ours">
-                <td><strong>Robometer (ours) ✓</strong></td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
-                <td class="best">XX.X</td><td class="best">XX.X</td>
+                <td><strong>+Robometer (ours) ✓</strong></td>
+                <td class="best">0.70</td>
               </tr>
             </tbody>
           </table>
@@ -1571,22 +1563,23 @@
         <div class="columns">
           <div class="column is-6">
             <div class="result-card">
-              <div class="placeholder-video" style="min-height:240px;">
-                <span class="icon-wrap"><i class="fas fa-play-circle"></i></span>
-                <strong>Model-Based Planning Demo</strong>
-                <span style="font-size:0.8rem;">mbrl_planning.mp4</span>
+              <div style="min-height:240px;">
+                <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                  <source src="assets/mbrl/mbrl_dreamzero.mov" type="video/mp4">
+                </video>
               </div>
-              <div class="card-caption">Model-based planning guided by Robometer reward on a long-horizon manipulation task.</div>
-            </div>
+              <div class="card-caption">Model-based planning with <b>DreamZero</b>. It mostly fails to put the ice cream cone in the correct plate. Video plays at 30x speed.</div>
+              </div>
           </div>
           <div class="column is-6">
             <div class="result-card">
-              <div class="placeholder-img" style="min-height:240px;">
-                <span class="icon-wrap"><i class="fas fa-chart-bar"></i></span>
-                <strong>Sample Efficiency Comparison</strong>
-                <span>Replace with mbrl_sample_efficiency.png</span>
+              <div style="min-height:240px;">
+                <video controls muted playsinline autoplay loop preload="metadata" style="border-radius:8px 8px 0 0; width:100%;">
+                  <source src="assets/mbrl/mbrl_robometer.mov" type="video/mp4">
+                </video>
               </div>
-              <div class="card-caption">Sample efficiency: Robometer-guided MBRL reaches baseline performance with fewer environment interactions.</div>
+              <div class="card-caption">Model-based planning guided by <b>Robometer</b> reward. It successfully guides DreamZero to execute the action chunk 
+                corresponding to putting the ice cream cone in the correct plate. Video plays at 100x speed -- inference delay comes from sampling multiple action chunks and not from the model itself.</div>
             </div>
           </div>
         </div>
