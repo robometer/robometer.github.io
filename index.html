@@ -88,6 +88,7 @@
     }
     .navbar-item { font-weight: 500; color: #333 !important; transition: color 0.2s ease; }
     .navbar-item:hover { color: #3273dc !important; }
+    .navbar-item.is-active-section { color: #3273dc !important; }
     /* Transparent navbar when over video (RISE-style); background reappears on scroll */
     .navbar.navbar-over-video {
       background: transparent !important;
@@ -97,6 +98,7 @@
     }
     .navbar.navbar-over-video .navbar-item { color: rgba(255,255,255,0.9) !important; }
     .navbar.navbar-over-video .navbar-item:hover { color: #3273dc !important; }
+    .navbar.navbar-over-video .navbar-item.is-active-section { color: #fff !important; border-bottom: 2px solid #fff; }
     .navbar.navbar-over-video .navbar-burger span { background-color: #fff; }
 
     /* ── Hero ────────────────────────────────────────────────── */
@@ -526,7 +528,7 @@
     <div id="navMenu" class="navbar-menu">
       <div class="navbar-end">
         <!--<a class="navbar-item" href="#abstract">Abstract</a>-->
-        <a class="navbar-item" href="#at-a-glance">At a Glance</a>
+        <a class="navbar-item" href="#at-a-glance">Robometer Overview</a>
         <a class="navbar-item" href="#method">Method</a>
         <a class="navbar-item" href="#dataset">Dataset</a>
         <a class="navbar-item" href="#ablations">Offline Eval</a>
@@ -666,10 +668,10 @@
   </div>
 </section>
 
-<!-- At a Glance – teaser video (below hero, after scroll) -->
+<!-- Overview – teaser video (below hero, after scroll) -->
 <section class="section is-light-alt" id="at-a-glance" style="padding: 2rem 1.5rem;">
   <div class="teaser-video-wrap">
-    <h2 class="section-heading">At a Glance: Robometer Provides Dense, General-Purpose, Video-Language-Conditioned Rewards</h2>
+    <h2 class="section-heading">Robometer: Dense, General-Purpose, Video-Language Reward Model</h2>
     <div class="section-divider"></div>
     <video controls muted playsinline autoplay loop preload="auto" style="width:100%; border-radius:8px; display:block;">
       <source src="assets/teaser_video_compressed.mp4" type="video/mp4">
@@ -1726,12 +1728,12 @@
     <h2 class="section-heading">BibTeX</h2>
     <div class="section-divider"></div>
     <div style="position:relative;">
-      <div class="bibtex-box" id="bibtex-content">@article{robometer2025,
+      <div class="bibtex-box" id="bibtex-content">@article{liang2026robometer,
   title     = {Robometer: Scaling General-Purpose Robotic Reward Models
                via Trajectory Comparisons},
-  author    = {Author One and Author Two and Author Three and Author Four},
+  author    = {Anthony Liang and Yigit Korkmaz and Jiahui Zhang and Minyoung Hwang and Abrar Anwar and Sidhant Kaushik and Aditya Shah and Alex S. Huang and Luke Zettlemoyer and Dieter Fox and Yu Xiang and Anqi Li and Andreea Bobu and Abhishek Gupta and Stephen Tu and Erdem Bıyık and Jesse Zhang},
   journal   = {arXiv preprint arXiv:XXXX.XXXXX},
-  year      = {2025},
+  year      = {2026},
 }</div>
       <button class="button is-small bibtex-copy-btn" onclick="copyBibtex()" title="Copy BibTeX">
         <span class="icon"><i class="fas fa-copy"></i></span>
@@ -1760,6 +1762,18 @@
   document.querySelector('.navbar-burger').addEventListener('click', function () {
     this.classList.toggle('is-active');
     document.getElementById('navMenu').classList.toggle('is-active');
+  });
+
+  /* Close mobile menu when a nav link is clicked */
+  document.querySelectorAll('.navbar-end .navbar-item[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var burger = document.querySelector('.navbar-burger');
+      var menu = document.getElementById('navMenu');
+      if (burger && burger.classList.contains('is-active')) {
+        burger.classList.remove('is-active');
+        menu.classList.remove('is-active');
+      }
+    });
   });
 
   /* Experiment tabs */
@@ -1842,6 +1856,43 @@
     updateNavbar();
     window.addEventListener('scroll', updateNavbar, { passive: true });
     window.addEventListener('resize', updateNavbar);
+  })();
+
+  /* Scroll spy: highlight active navbar item based on visible section */
+  (function () {
+    var navLinks = document.querySelectorAll('.navbar-end .navbar-item[href^="#"]');
+    if (!navLinks.length) return;
+    var sections = [];
+    navLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if (el) sections.push({ id: id, el: el, link: link });
+    });
+
+    function updateActiveNav() {
+      var scrollY = window.scrollY || document.documentElement.scrollTop;
+      var offset = 80;
+      var active = null;
+      for (var i = sections.length - 1; i >= 0; i--) {
+        if (sections[i].el.getBoundingClientRect().top <= offset) {
+          active = sections[i];
+          break;
+        }
+      }
+      navLinks.forEach(function (link) { link.classList.remove('is-active-section'); });
+      if (active) {
+        active.link.classList.add('is-active-section');
+        if (history.replaceState && location.hash !== '#' + active.id) {
+          history.replaceState(null, '', '#' + active.id);
+        }
+      } else if (history.replaceState && location.hash) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+    }
+
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    window.addEventListener('resize', updateActiveNav);
   })();
 
   /* Hero text fades out as user scrolls down (RISE-style) */
