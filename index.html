@@ -1199,19 +1199,11 @@
     </div><!-- end offline-eval-tabs -->
     <hr class="offline-eval-separator" aria-hidden="true">
 
-    <!-- Reward curves by dataset/task (ID) -->
-    <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Reward curves by trajectory (RBM-EVAL-ID)</h3>
-    <p style="text-align:center;color:#555;margin-bottom:1.25rem;font-size:0.95rem;">Same random trajectory compared across four reward models.</p>
-    <div class="reward-curves-viewer" style="max-width:1100px;margin:0 auto 2rem;">
+    <!-- Reward curves by task (video) -->
+    <h3 class="title is-5" style="margin-top:2.5rem;text-align:center;color:#1a1a2e;">Reward curves by task</h3>
+    <p style="text-align:center;color:#555;margin-bottom:1.25rem;font-size:0.95rem;">Select a task to view the reward curve video.</p>
+    <div class="reward-curves-viewer" style="max-width:900px;margin:0 auto 2rem;">
       <div class="reward-curves-controls" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:1rem;margin-bottom:1.5rem;padding:1rem;background:#f7f9fc;border-radius:10px;">
-        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;font-weight:600;color:#333;">
-          Dataset
-          <div class="select is-small">
-            <select id="reward-curves-dataset">
-              <option value="">— Select —</option>
-            </select>
-          </div>
-        </label>
         <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;font-weight:600;color:#333;">
           Task
           <div class="select is-small">
@@ -1221,104 +1213,61 @@
           </div>
         </label>
       </div>
-      <div id="reward-curves-grid" class="columns is-multiline" style="margin:0 -0.5rem;">
-        <div class="column is-6" style="padding:0.5rem;" data-method="rbm">
-          <div class="result-card" style="height:100%;">
-            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">Robometer</div>
-            <img class="reward-curve-img" alt="Robometer" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
-          </div>
-        </div>
-        <div class="column is-6" style="padding:0.5rem;" data-method="robodopamine">
-          <div class="result-card" style="height:100%;">
-            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">Robo-Dopamine</div>
-            <img class="reward-curve-img" alt="Robo-Dopamine" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
-          </div>
-        </div>
-        <div class="column is-6" style="padding:0.5rem;" data-method="roboreward">
-          <div class="result-card" style="height:100%;">
-            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">RoboReward-4B</div>
-            <img class="reward-curve-img" alt="RoboReward-4B" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
-          </div>
-        </div>
-        <div class="column is-6" style="padding:0.5rem;" data-method="vlac">
-          <div class="result-card" style="height:100%;">
-            <div style="padding:0.5rem 0.75rem 0;font-size:0.8rem;font-weight:700;color:#1a1a2e;">VLAC-8B</div>
-            <img class="reward-curve-img" alt="VLAC-8B" style="width:100%;display:block;border-radius:0 0 8px 8px;min-height:220px;background:#f5f5f5;object-fit:contain;">
-          </div>
-        </div>
+      <div class="result-card" style="overflow:hidden;">
+        <video id="reward-curves-video" controls muted playsinline preload="metadata" style="width:100%;display:block;border-radius:8px 8px 0 0;vertical-align:top;background:#f5f5f5;">
+          <source id="reward-curves-video-src" src="" type="video/mp4">
+        </video>
       </div>
     </div>
     <script>
     (function() {
-      var BASE = 'assets/images/reward_curves_id';
-      var CONFIG = { qualities: ['success', 'failure'], maxIdx: 20, maxIdxSuccess: 8 };
-      var DEFAULT_DATASET = 'jesbu1_racer_rfm_racer_val';
-      var DEFAULT_TASK = 'open_the_top_drawer';
-      var datasetSelect = document.getElementById('reward-curves-dataset');
+      var BASE = 'assets/reward_curves';
       var taskSelect = document.getElementById('reward-curves-task');
-      var grid = document.getElementById('reward-curves-grid');
-      function fillDatasetOptions(datasets) {
-        var opts = datasetSelect.querySelectorAll('option');
-        for (var i = 1; i < opts.length; i++) opts[i].remove();
-        Object.keys(datasets).sort().forEach(function(d) {
-          var o = document.createElement('option');
-          o.value = d;
-          o.textContent = d;
-          datasetSelect.appendChild(o);
-        });
+      var video = document.getElementById('reward-curves-video');
+      var videoSrc = document.getElementById('reward-curves-video-src');
+      function filenameToLabel(filename) {
+        var name = filename.replace(/\.mp4$/i, '').replace(/_/g, ' ');
+        return name;
       }
-      function fillTaskOptions(datasets) {
-        var data = datasets || CONFIG.datasets;
-        if (!data) return;
-        var d = datasetSelect.value;
-        while (taskSelect.options.length > 1) taskSelect.remove(1);
-        if (!d || !data[d]) return;
-        data[d].forEach(function(t) {
+      function updateVideo() {
+        var filename = taskSelect.value;
+        if (!filename) {
+          videoSrc.src = '';
+          video.style.display = 'none';
+          return;
+        }
+        videoSrc.src = BASE + '/' + encodeURIComponent(filename);
+        video.style.display = 'block';
+        video.load();
+        function tryPlay() {
+          var p = video.play();
+          if (p && p.catch) p.catch(function() {});
+        }
+        video.addEventListener('canplay', tryPlay, { once: true });
+        if (video.readyState >= 2) tryPlay();
+      }
+      taskSelect.addEventListener('change', updateVideo);
+      fetch(BASE + '/config.json').then(function(r) { return r.json(); }).then(function(filenames) {
+        if (!filenames || !filenames.length) return;
+        filenames.forEach(function(filename) {
+          if (!/\.mp4$/i.test(filename)) return;
           var o = document.createElement('option');
-          o.value = t;
-          o.textContent = t.length > 50 ? t.slice(0, 47) + '...' : t;
+          o.value = filename;
+          o.textContent = filenameToLabel(filename);
           taskSelect.appendChild(o);
         });
-      }
-      function pickRandom() {
-        var q = CONFIG.qualities[Math.floor(Math.random() * CONFIG.qualities.length)];
-        var maxIdx = (q === 'success') ? CONFIG.maxIdxSuccess : CONFIG.maxIdx;
-        var idx = 1 + Math.floor(Math.random() * maxIdx);
-        return { quality: q, idx: idx };
-      }
-      function updateImages() {
-        var dataset = datasetSelect.value;
-        var task = taskSelect.value;
-        if (!dataset || !task) return;
-        var r = pickRandom();
-        var quality = r.quality, idx = r.idx;
-        grid.querySelectorAll('[data-method]').forEach(function(col) {
-          var method = col.getAttribute('data-method');
-          var img = col.querySelector('.reward-curve-img');
-          var src = BASE + '/' + encodeURIComponent(dataset) + '/' + encodeURIComponent(task) + '/' + method + '/' + method + '_' + quality + '_' + idx + '_final.png';
-          img.src = src;
-          img.onerror = function() { this.style.background='#eee'; this.alt='Image not found'; };
+        taskSelect.value = filenames[0];
+        updateVideo();
+      }).catch(function() {
+        var fallback = ['stack_the_red_cube_on_the_gray_cube.mp4'];
+        fallback.forEach(function(filename) {
+          var o = document.createElement('option');
+          o.value = filename;
+          o.textContent = filenameToLabel(filename);
+          taskSelect.appendChild(o);
         });
-      }
-      datasetSelect.addEventListener('change', function() { fillTaskOptions(); taskSelect.value = ''; });
-      taskSelect.addEventListener('change', updateImages);
-      function init(configData) {
-        CONFIG.datasets = configData;
-        var datasets = configData && Object.keys(configData);
-        if (!datasets || datasets.length === 0) return;
-        fillDatasetOptions(configData);
-        var dataset = configData[DEFAULT_DATASET] ? DEFAULT_DATASET : datasets[0];
-        datasetSelect.value = dataset;
-        fillTaskOptions(configData);
-        var tasks = configData[dataset];
-        var task = (tasks && tasks.indexOf(DEFAULT_TASK) !== -1) ? DEFAULT_TASK : (tasks && tasks[0]);
-        if (task) {
-          taskSelect.value = task;
-          updateImages();
-        }
-      }
-      fetch('assets/images/reward_curves_id_config.json').then(function(r) { return r.json(); }).then(init).catch(function() {
-        init({ 'jesbu1_racer_rfm_racer_val': ['open_the_top_drawer'] });
+        taskSelect.value = fallback[0];
+        updateVideo();
       });
     })();
     </script>
