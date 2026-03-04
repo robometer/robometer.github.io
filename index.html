@@ -941,14 +941,14 @@
       <div id="offline-tab-voc-ranking" class="offline-eval-tab-panel is-active">
         <div class="highlight-box is-info-light" style="margin-bottom:1.5rem;">
           <strong>Setting.</strong>
-          Reward alignment is measured with Value Order Correlation (VOC Pearson $r$) between predicted rewards and ground-truth progress; trajectory ranking is measured with Kendall $\tau$ on RBM-EVAL (in-distribution and out-of-distribution). We compare baselines (GVL, VLAC, RoboDopamine), models trained on RoboReward data, and ReWiND / Robometer on full RBM-1M.
+          Reward alignment is measured with Value Order Correlation (VOC Pearson $r$) between predicted rewards and ground-truth progress; trajectory ranking is measured with Kendall $\tau$ on RBM-EVAL (in-distribution and out-of-distribution). We compare baselines (GVL, VLAC, RoboDopamine, TOPReward), models trained on RoboReward data, and ReWiND / Robometer on full RBM-1M.
         </div>
         <div class="results-table" style="margin-bottom:1rem; overflow-x:auto; max-width:1400px; margin-left:auto; margin-right:auto;">
           <table class="table is-fullwidth is-bordered is-hoverable" style="min-width:800px;">
             <thead>
               <tr>
                 <th rowspan="2">Dataset</th>
-                <th colspan="3">Baselines</th>
+                <th colspan="4">Baselines</th>
                 <th colspan="3">w/ RoboReward Training Data</th>
                 <th colspan="2">w/ our RBM-1M data</th>
               </tr>
@@ -956,6 +956,7 @@
                 <th>GVL</th>
                 <th>VLAC</th>
                 <th>RoboDopamine</th>
+                <th>TOPReward</th>
                 <th>RoboReward-4B</th>
                 <th>RoboReward-8B</th>
                 <th>Robometer</th>
@@ -964,11 +965,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="separator-row"><td colspan="9"><strong>(a) Reward alignment (VOC Pearson $r$) ↑</strong></td></tr>
-              <tr><td>RBM-EVAL-ID</td><td>0.16</td><td>0.16</td><td>0.13</td><td>0.77</td><td>0.82</td><td>0.84</td><td>0.46</td><td class="ours best"><strong>0.92</strong></td></tr>
-              <tr><td>RBM-EVAL-OOD</td><td>0.21</td><td>0.17</td><td>0.08</td><td>0.88</td><td>0.88</td><td>0.93</td><td>0.51</td><td class="ours best"><strong>0.95</strong></td></tr>
-              <tr class="separator-row"><td colspan="9"><strong>(b) Trajectory ranking (Kendall $\tau$) ↑</strong></td></tr>
-              <tr><td>RBM-EVAL-OOD</td><td>0.19</td><td>0.08</td><td>0.11</td><td>0.50</td><td>0.47</td><td>0.55</td><td>0.01</td><td class="ours best"><strong>0.66</strong></td></tr>
+              <tr class="separator-row"><td colspan="10"><strong>(a) Reward alignment (VOC Pearson $r$) ↑</strong></td></tr>
+              <tr><td>RBM-EVAL-ID</td><td>0.16</td><td>0.16</td><td>0.13</td><td>0.78</td><td>0.77</td><td>0.82</td><td>0.84</td><td>0.46</td><td class="ours best"><strong>0.92</strong></td></tr>
+              <tr><td>RBM-EVAL-OOD</td><td>0.21</td><td>0.17</td><td>0.08</td><td>0.78</td><td>0.88</td><td>0.88</td><td>0.93</td><td>0.51</td><td class="ours best"><strong>0.95</strong></td></tr>
+              <tr class="separator-row"><td colspan="10"><strong>(b) Trajectory ranking (Kendall $\tau$) ↑</strong></td></tr>
+              <tr><td>RBM-EVAL-OOD</td><td>0.19</td><td>0.08</td><td>0.11</td><td>0.22</td><td>0.50</td><td>0.47</td><td>0.55</td><td>0.01</td><td class="ours best"><strong>0.66</strong></td></tr>
             </tbody>
           </table>
         </div>
