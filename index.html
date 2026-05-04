@@ -686,7 +686,11 @@
         </a>
         <a class="button is-warning" href="#" target="_blank">
           <span class="icon"><i class="fas fa-database"></i></span>
-          <span>RBM-1M Dataset (Coming Soon)</span>
+          <span>RBM-1M Data (Coming Soon)</span>
+        </a>
+        <a class="button is-warning" href="https://huggingface.co/datasets/robometer/rbm-1m-ood" target="_blank">
+          <span class="icon"><i class="fas fa-database"></i></span>
+          <span>OOD Eval Data</span>
         </a>
         <a class="button is-success" href="https://huggingface.co/robometer/Robometer-4B" target="_blank">
           <span class="icon"><i class="fas fa-cube"></i></span>
@@ -957,7 +961,7 @@
               <tr>
                 <th>GVL</th>
                 <th>VLAC</th>
-                <th>RoboDopamine</th>
+                <th>RoboDopamine-8B</th>
                 <th>TOPReward</th>
                 <th>RoboReward-4B</th>
                 <th>RoboReward-8B</th>
@@ -968,10 +972,10 @@
             </thead>
             <tbody>
               <tr class="separator-row"><td colspan="10"><strong>(a) Reward alignment (VOC Pearson $r$) ↑</strong></td></tr>
-              <tr><td>RBM-EVAL-ID</td><td>0.16</td><td>0.16</td><td>0.13</td><td>0.78</td><td>0.77</td><td>0.82</td><td>0.84</td><td>0.46</td><td class="ours best"><strong>0.92</strong></td></tr>
-              <tr><td>RBM-EVAL-OOD</td><td>0.21</td><td>0.17</td><td>0.08</td><td>0.78</td><td>0.88</td><td>0.88</td><td>0.93</td><td>0.51</td><td class="ours best"><strong>0.95</strong></td></tr>
+              <tr><td>RBM-EVAL-ID</td><td>0.16</td><td>0.16</td><td>0.75</td><td>0.78</td><td>0.77</td><td>0.82</td><td>0.84</td><td>0.46</td><td class="ours best"><strong>0.92</strong></td></tr>
+              <tr><td>RBM-EVAL-OOD</td><td>0.21</td><td>0.17</td><td>0.74</td><td>0.78</td><td>0.88</td><td>0.88</td><td>0.93</td><td>0.51</td><td class="ours best"><strong>0.95</strong></td></tr>
               <tr class="separator-row"><td colspan="10"><strong>(b) Trajectory ranking (Kendall $\tau$) ↑</strong></td></tr>
-              <tr><td>RBM-EVAL-OOD</td><td>0.19</td><td>0.08</td><td>0.11</td><td>0.22</td><td>0.50</td><td>0.47</td><td>0.55</td><td>0.01</td><td class="ours best"><strong>0.66</strong></td></tr>
+              <tr><td>RBM-EVAL-OOD</td><td>0.19</td><td>0.08</td><td>0.39</td><td>0.22</td><td>0.50</td><td>0.47</td><td>0.55</td><td>0.01</td><td class="ours best"><strong>0.66</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -1005,7 +1009,7 @@
             <tr>
               <th>GVL</th>
               <th>VLAC-8B</th>
-              <th>RoboDopamine</th>
+              <th>RoboDopamine-8B</th>
               <th>RoboReward-4B</th>
               <th>RoboReward-8B</th>
               <th>Robometer</th>
@@ -1014,16 +1018,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>RACER</td><td>0.131</td><td>0.156</td><td>0.197</td><td>0.491</td><td>0.652</td><td>0.937</td><td>0.561</td><td class="ours best"><strong>0.943</strong></td></tr>
-            <tr><td>OXE (BC-Z)</td><td>0.142</td><td>−0.150</td><td>−0.109</td><td>0.643</td><td>0.809</td><td>0.683</td><td>0.442</td><td class="ours best"><strong>0.922</strong></td></tr>
-            <tr><td>OXE (Berkeley Cable Routing)</td><td>0.075</td><td>−0.425</td><td>−0.384</td><td>0.657</td><td>0.801</td><td class="best">0.900</td><td>0.491</td><td class="ours">0.887</td></tr>
-            <tr><td>OXE (Bridge V2)</td><td>0.143</td><td>−0.875</td><td>−0.834</td><td>0.891</td><td>0.898</td><td>0.633</td><td>0.526</td><td class="ours best"><strong>0.920</strong></td></tr>
-            <tr><td>OXE (Jaco Play)</td><td>0.114</td><td>−0.151</td><td>−0.110</td><td>0.793</td><td>0.785</td><td>0.861</td><td>0.550</td><td class="ours best"><strong>0.872</strong></td></tr>
-            <tr><td>OXE (Toto)</td><td>0.254</td><td>−0.416</td><td>−0.375</td><td>0.886</td><td>0.939</td><td class="best">0.947</td><td>0.340</td><td class="ours">0.930</td></tr>
-            <tr><td>OXE (Viola)</td><td>0.264</td><td>0.479</td><td>0.520</td><td>0.915</td><td>0.896</td><td class="best">0.967</td><td>−0.014</td><td class="ours">0.947</td></tr>
-            <tr><td>Metaworld</td><td>0.134</td><td>0.211</td><td>0.252</td><td>0.746</td><td>0.779</td><td>0.737</td><td>0.630</td><td class="ours best"><strong>0.900</strong></td></tr>
-            <tr><td>Libero (90)</td><td>0.254</td><td>0.217</td><td>0.258</td><td>0.874</td><td>0.846</td><td>0.912</td><td>0.592</td><td class="ours best"><strong>0.967</strong></td></tr>
-            <tr class="ours"><td><strong>Average</strong></td><td>0.168</td><td>0.089</td><td>0.130</td><td>0.766</td><td>0.823</td><td>0.842</td><td>0.458</td><td class="best"><strong>0.921</strong></td></tr>
+            <tr><td>RACER</td><td>0.131</td><td>0.156</td><td>0.710</td><td>0.491</td><td>0.652</td><td>0.937</td><td>0.561</td><td class="ours best"><strong>0.943</strong></td></tr>
+            <tr><td>OXE (BC-Z)</td><td>0.142</td><td>−0.150</td><td>0.749</td><td>0.643</td><td>0.809</td><td>0.683</td><td>0.442</td><td class="ours best"><strong>0.922</strong></td></tr>
+            <tr><td>OXE (Berkeley Cable Routing)</td><td>0.075</td><td>−0.425</td><td>0.703</td><td>0.657</td><td>0.801</td><td class="best">0.900</td><td>0.491</td><td class="ours">0.887</td></tr>
+            <tr><td>OXE (Bridge V2)</td><td>0.143</td><td>−0.875</td><td>0.834</td><td>0.891</td><td>0.898</td><td>0.633</td><td>0.526</td><td class="ours best"><strong>0.920</strong></td></tr>
+            <tr><td>OXE (Jaco Play)</td><td>0.114</td><td>−0.151</td><td>0.849</td><td>0.793</td><td>0.785</td><td>0.861</td><td>0.550</td><td class="ours best"><strong>0.872</strong></td></tr>
+            <tr><td>OXE (Toto)</td><td>0.254</td><td>−0.416</td><td>0.688</td><td>0.886</td><td>0.939</td><td class="best">0.947</td><td>0.340</td><td class="ours">0.930</td></tr>
+            <tr><td>OXE (Viola)</td><td>0.264</td><td>0.479</td><td>0.685</td><td>0.915</td><td>0.896</td><td class="best">0.967</td><td>−0.014</td><td class="ours">0.947</td></tr>
+            <tr><td>Metaworld</td><td>0.134</td><td>0.211</td><td>0.682</td><td>0.746</td><td>0.779</td><td>0.737</td><td>0.630</td><td class="ours best"><strong>0.900</strong></td></tr>
+            <tr><td>Libero (90)</td><td>0.254</td><td>0.217</td><td>0.875</td><td>0.874</td><td>0.846</td><td>0.912</td><td>0.592</td><td class="ours best"><strong>0.967</strong></td></tr>
+            <tr class="ours"><td><strong>Average</strong></td><td>0.168</td><td>0.089</td><td>0.753</td><td>0.766</td><td>0.823</td><td>0.842</td><td>0.458</td><td class="best"><strong>0.921</strong></td></tr>
           </tbody>
         </table>
       </div>
@@ -1043,7 +1047,7 @@
             <tr>
               <th>GVL</th>
               <th>VLAC-8B</th>
-              <th>RoboDopamine</th>
+              <th>RoboDopamine-8B</th>
               <th>RoboReward-4B</th>
               <th>RoboReward-8B</th>
               <th>Robometer</th>
@@ -1052,13 +1056,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>USC Franka</td><td>0.102</td><td>0.356</td><td>0.061</td><td>0.909</td><td>0.909</td><td>0.959</td><td>0.772</td><td class="ours best"><strong>0.959</strong></td></tr>
-            <tr><td>USC Koch</td><td>0.176</td><td>0.074</td><td>−0.221</td><td>0.866</td><td>0.916</td><td class="best">0.969</td><td>0.585</td><td class="ours">0.950</td></tr>
-            <tr><td>USC Trossen</td><td>0.542</td><td>0.256</td><td>−0.039</td><td>0.781</td><td>0.726</td><td class="best">0.925</td><td>0.226</td><td class="ours">0.911</td></tr>
-            <tr><td>USC xArm</td><td>0.282</td><td>0.454</td><td>0.159</td><td>0.896</td><td>0.914</td><td>0.951</td><td>0.435</td><td class="ours best"><strong>0.961</strong></td></tr>
-            <tr><td>MIT Franka</td><td>0.268</td><td>0.601</td><td>0.306</td><td>0.896</td><td>0.899</td><td>0.868</td><td>0.531</td><td class="ours best"><strong>0.954</strong></td></tr>
-            <tr><td>UT Dallas SO101</td><td>0.203</td><td>0.511</td><td>0.216</td><td>0.926</td><td>0.930</td><td>0.888</td><td>0.497</td><td class="ours best"><strong>0.952</strong></td></tr>
-            <tr class="ours"><td><strong>Average</strong></td><td>0.262</td><td>0.375</td><td>0.080</td><td>0.879</td><td>0.882</td><td>0.927</td><td>0.508</td><td class="best"><strong>0.948</strong></td></tr>
+            <tr><td>USC Franka</td><td>0.102</td><td>0.356</td><td>0.814</td><td>0.909</td><td>0.909</td><td>0.959</td><td>0.772</td><td class="ours best"><strong>0.959</strong></td></tr>
+            <tr><td>USC Koch</td><td>0.176</td><td>0.074</td><td>0.787</td><td>0.866</td><td>0.916</td><td class="best">0.969</td><td>0.585</td><td class="ours">0.950</td></tr>
+            <tr><td>USC Trossen</td><td>0.542</td><td>0.256</td><td>0.509</td><td>0.781</td><td>0.726</td><td class="best">0.925</td><td>0.226</td><td class="ours">0.911</td></tr>
+            <tr><td>USC xArm</td><td>0.282</td><td>0.454</td><td>0.867</td><td>0.896</td><td>0.914</td><td>0.951</td><td>0.435</td><td class="ours best"><strong>0.961</strong></td></tr>
+            <tr><td>MIT Franka</td><td>0.268</td><td>0.601</td><td>0.669</td><td>0.896</td><td>0.899</td><td>0.868</td><td>0.531</td><td class="ours best"><strong>0.954</strong></td></tr>
+            <tr><td>UT Dallas SO101</td><td>0.203</td><td>0.511</td><td>0.811</td><td>0.926</td><td>0.930</td><td>0.888</td><td>0.497</td><td class="ours best"><strong>0.952</strong></td></tr>
+            <tr class="ours"><td><strong>Average</strong></td><td>0.262</td><td>0.375</td><td>0.743</td><td>0.879</td><td>0.882</td><td>0.927</td><td>0.508</td><td class="best"><strong>0.948</strong></td></tr>
           </tbody>
         </table>
       </div>
@@ -1077,7 +1081,7 @@
               <th>GVL</th>
               <th>VLAC-2B</th>
               <th>VLAC-8B</th>
-              <th>RoboDopamine</th>
+              <th>RoboDopamine-8B</th>
               <th>RoboReward-4B</th>
               <th>RoboReward-8B</th>
               <th>Robometer</th>
@@ -1086,13 +1090,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td>USC Franka</td><td>0.250</td><td>0.292</td><td>0.271</td><td>0.167</td><td>0.625</td><td>0.625</td><td>0.583</td><td>−0.125</td><td class="ours best"><strong>0.646</strong></td></tr>
-            <tr><td>USC Koch</td><td>−0.008</td><td>0.167</td><td>0.064</td><td>0.175</td><td>0.332</td><td>0.264</td><td class="best">0.533</td><td>0.336</td><td class="ours">0.471</td></tr>
-            <tr><td>USC Trossen</td><td>0.292</td><td>−0.111</td><td>−0.417</td><td>0.000</td><td>0.333</td><td>0.389</td><td>0.646</td><td>0.028</td><td class="ours best"><strong>0.653</strong></td></tr>
-            <tr><td>USC xArm</td><td>0.056</td><td>0.167</td><td>0.139</td><td>0.014</td><td>0.528</td><td>0.347</td><td>0.403</td><td>−0.167</td><td class="ours best"><strong>0.694</strong></td></tr>
-            <tr><td>MIT Franka</td><td>0.306</td><td>−0.017</td><td>0.072</td><td>0.220</td><td>0.494</td><td>0.396</td><td>0.479</td><td>0.080</td><td class="ours best"><strong>0.601</strong></td></tr>
-            <tr><td>UT Dallas SO101</td><td>0.300</td><td>−0.033</td><td>0.167</td><td>0.067</td><td>0.700</td><td>0.767</td><td>0.667</td><td>−0.067</td><td class="ours best"><strong>0.867</strong></td></tr>
-            <tr class="ours"><td><strong>Average</strong></td><td>0.199</td><td>0.077</td><td>0.049</td><td>0.107</td><td>0.502</td><td>0.465</td><td>0.552</td><td>0.014</td><td class="best"><strong>0.655</strong></td></tr>
+            <tr><td>USC Franka</td><td>0.250</td><td>0.292</td><td>0.271</td><td>0.479</td><td>0.625</td><td>0.625</td><td>0.583</td><td>−0.125</td><td class="ours best"><strong>0.646</strong></td></tr>
+            <tr><td>USC Koch</td><td>−0.008</td><td>0.167</td><td>0.064</td><td>0.420</td><td>0.332</td><td>0.264</td><td class="best">0.533</td><td>0.336</td><td class="ours">0.471</td></tr>
+            <tr><td>USC Trossen</td><td>0.292</td><td>−0.111</td><td>−0.417</td><td>0.236</td><td>0.333</td><td>0.389</td><td>0.646</td><td>0.028</td><td class="ours best"><strong>0.653</strong></td></tr>
+            <tr><td>USC xArm</td><td>0.056</td><td>0.167</td><td>0.139</td><td>0.361</td><td>0.528</td><td>0.347</td><td>0.403</td><td>−0.167</td><td class="ours best"><strong>0.694</strong></td></tr>
+            <tr><td>MIT Franka</td><td>0.306</td><td>−0.017</td><td>0.072</td><td>0.283</td><td>0.494</td><td>0.396</td><td>0.479</td><td>0.080</td><td class="ours best"><strong>0.601</strong></td></tr>
+            <tr><td>UT Dallas SO101</td><td>0.300</td><td>−0.033</td><td>0.167</td><td>0.567</td><td>0.700</td><td>0.767</td><td>0.667</td><td>−0.067</td><td class="ours best"><strong>0.867</strong></td></tr>
+            <tr class="ours"><td><strong>Average</strong></td><td>0.199</td><td>0.077</td><td>0.049</td><td>0.391</td><td>0.502</td><td>0.465</td><td>0.552</td><td>0.014</td><td class="best"><strong>0.655</strong></td></tr>
           </tbody>
         </table>
       </div>
